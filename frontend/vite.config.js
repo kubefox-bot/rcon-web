@@ -1,0 +1,33 @@
+import { defineConfig, loadEnv } from 'vite'
+import vue from '@vitejs/plugin-vue'
+import path from 'path'
+
+export default defineConfig(({ mode }) => {
+  const env = loadEnv(mode, process.cwd(), '')
+
+  return {
+    plugins: [vue()],
+    server: {
+      host: env.FRONT_HOST,
+      port: Number(env.FRONT_PORT) || 5173,
+      strictPort: true,
+    },
+    resolve: {
+      alias: {
+        '@': path.resolve(__dirname, 'src'),
+        '@handlers': path.resolve(__dirname, 'src/handlers'),
+        '@lib': path.resolve(__dirname, 'src/lib'),
+        '@view': path.resolve(__dirname, 'src/view'),
+        '@components': path.resolve(__dirname, 'src/view/components'),
+        '@pages': path.resolve(__dirname, 'src/view/pages'),
+      },
+    },
+    define: {
+      AUTH_TOKEN: JSON.stringify(env.AUTH_TOKEN),
+      API_HOST: JSON.stringify(env.HOST),
+      API_PORT: JSON.stringify(env.PORT),
+      FRONT_PORT: JSON.stringify(env.FRONT_PORT),
+      FRONT_HOST: JSON.stringify(env.FRONT_HOST)
+    },
+  }
+})
