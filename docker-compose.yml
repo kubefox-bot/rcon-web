@@ -1,18 +1,24 @@
 services:
   backend:
     build:
-      context: ./apps/backend
+      context: ./backend
       dockerfile: Dockerfile
+    container_name: rcon-backend
     ports:
       - "3000:3000"
     env_file:
-      - ./apps/backend/.env
+      - .env
+    restart: unless-stopped
 
   frontend:
     build:
-      context: ./apps/frontend
+      context: ./frontend
       dockerfile: Dockerfile
+    container_name: rcon-frontend
     ports:
-      - "5173:4173"
+      - "3001:4173"
+    env_file:
+      - .env
     depends_on:
       - backend
+    restart: unless-stopped
