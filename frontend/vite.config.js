@@ -24,7 +24,7 @@ export default defineConfig(({ mode }) => {
     },
     define: {
       AUTH_TOKEN: JSON.stringify(env.AUTH_TOKEN),
-      API_HOST: JSON.stringify(env.HOST),
+      API_HOST: JSON.stringify(env.API_HOST),
       API_PORT: JSON.stringify(env.PORT),
       FRONT_PORT: JSON.stringify(env.FRONT_PORT),
       FRONT_HOST: JSON.stringify(env.FRONT_HOST)

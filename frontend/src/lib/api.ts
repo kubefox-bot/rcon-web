@@ -1,8 +1,11 @@
 import { config } from '@/config'
 import axios from 'axios'
 
+
+console.log(config);
+
 export const api = axios.create({
-  baseURL: `http://${config.apiHost}:${config.apiPort}`,
+  baseURL: `${config.apiHost}`,
   headers:{
     Authorization: `Bearer ${config.token}`
   }
