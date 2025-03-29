@@ -28,7 +28,7 @@ impl Config {
     }
 
     pub fn socket_addr(&self) -> SocketAddr {
-        format!("{}:{}", self.host, self.port)
+        format!("0.0.0.0:{}", self.port)
             .parse()
             .expect("Invalid HOST or PORT in .env")
     }
