@@ -1,19 +1,8 @@
-use axum::{
-    extract::State,
-    response::IntoResponse,
-    Json,
-};
-use serde_json::json;
+use axum::response::Response;
+use crate::{state::AppState, models::response::ApiResponse};
 
-use crate::state::AppState;
-
-pub async fn handler(
-    State(state): State<AppState>,
-
-) -> impl IntoResponse {
-  
+pub async fn handle_disconnect(state: AppState) -> Response {
     let mut lock = state.client.lock().await;
     *lock = None;
-
-    Json(json!({ "status": "disconnected" })).into_response()
+    ApiResponse::with_message_and_data("Disconnected from RCON", Some(()))
 }

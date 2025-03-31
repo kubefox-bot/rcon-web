@@ -1,26 +1,15 @@
-use axum::{extract::{State, Json}, response::IntoResponse, http::StatusCode};
+use axum::{http::StatusCode, response::Response};
 use serde_json::json;
+use crate::{state::AppState, models::response::ApiResponse};
 
-use crate::{ state::AppState, models::ConnectRequest};
-use rcon::Connection;
-use tokio::net::TcpStream;
-
-pub async fn handler(
-    State(state): State<AppState>,
-    Json(payload): Json<ConnectRequest>,
-) -> impl IntoResponse {
-    
-
-    let addr = format!("{}:{}", payload.host, payload.port);
-    match Connection::<TcpStream>::connect(&addr, &payload.password).await {
+pub async fn handle_connect(host: String, port: u16, password: String, state: AppState) -> Response {
+    let addr = format!("{host}:{port}");
+    match rcon::Connection::connect(&addr, &password).await {
         Ok(conn) => {
             let mut lock = state.client.lock().await;
             *lock = Some(conn);
-            Json(json!({ "status": "connected" })).into_response()
+            ApiResponse::<serde_json::Value>::with_message_and_data("Connected to RCON",  json!({ "host": host, "port": port }).into())
         }
-        Err(err) => (
-            StatusCode::INTERNAL_SERVER_ERROR,
-            format!("Failed to connect: {err}"),
-        ).into_response(),
+        Err(err) => ApiResponse::<()>::error(&format!("Connect error: {err}"), StatusCode::INTERNAL_SERVER_ERROR),
     }
 }

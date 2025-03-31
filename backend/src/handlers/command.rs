@@ -1,28 +1,15 @@
-use axum::{extract::{State, Json}, response::IntoResponse, http::StatusCode};
+use axum::{http::StatusCode, response::Response};
+use crate::{state::AppState, models::response::ApiResponse};
 use serde_json::json;
 
-use crate::{state::AppState, models::CommandRequest};
-
-pub async fn handler(
-    State(state): State<AppState>,
-
-    Json(payload): Json<CommandRequest>,
-) -> impl IntoResponse {
-   
-
+pub async fn handle_command(command: String, state: AppState) -> Response {
     let mut lock = state.client.lock().await;
     if let Some(conn) = lock.as_mut() {
-        match conn.cmd(&payload.command).await {
-            Ok(response) => Json(json!({ "response": response })).into_response(),
-            Err(err) => (
-                StatusCode::INTERNAL_SERVER_ERROR,
-                format!("Command failed: {}", err),
-            ).into_response(),
+        match conn.cmd(&command).await {
+            Ok(response) => ApiResponse::ok(json!({ "response": response })),
+            Err(err) => ApiResponse::<()>::error(&format!("Command error: {err}"), StatusCode::INTERNAL_SERVER_ERROR),
         }
     } else {
-        (
-            StatusCode::BAD_REQUEST,
-            "Not connected. Use /connect first",
-        ).into_response()
+        ApiResponse::<()>::error("Not connected", StatusCode::BAD_REQUEST)
     }
 }
