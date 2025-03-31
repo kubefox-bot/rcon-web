@@ -1,0 +1,21 @@
+:root {
+    --bg-dark: #1e1e2f;
+    --card-bg: #2a2a3d;
+    --text-color: #f0f0f0;
+    --accent: #0f0;
+    --danger: #b22222;
+    --error: #ff3b3b;
+    --terminal-bg: #111;
+    --terminal-text: #0f0;
+  
+    --radius: 1rem;
+    --padding: 1.5rem;
+    --shadow: 0 4px 20px rgba(0, 0, 0, 0.4);
+    --font-mono: 'Fira Code', monospace;
+  }
+
+
+body{
+    margin: 0;
+}
+  

@@ -1,55 +1,69 @@
 <template>
-  <details>
-    <summary>Write command</summary>
+  <div class="card">
+    <h3>⌨️ Выполнить команду</h3>
     <div class="command">
-      <textarea v-model="command" placeholder="Enter command..." rows="4" />
-      <button @click="sendCommand">Send Command</button>
+      <textarea v-model="command" placeholder="Введите команду..." rows="4" />
+      <button @click="sendCommand">🚀 Отправить</button>
     </div>
-  </details>
-  </template>
-  
-  <script setup lang="ts">
-  import { ref, defineEmits } from 'vue'
-  
-  const emit = defineEmits(['send-command', 'logout'])
-  
-  const command = ref('status')
-  
-  const sendCommand = () => {
-    const val = command.value.trim();
+  </div>
+</template>
 
+<script setup lang="ts">
+import { ref } from 'vue'
 
-    if (val.length === 0){
-      alert("Command is Empty");
-      return;
-    }
+const emit = defineEmits(['send-command'])
 
-    if (command.value.trim()) {
-      emit('send-command', command.value)
-    }
+const command = ref('status')
+
+const sendCommand = () => {
+  const val = command.value.trim()
+  if (!val.length) {
+    alert('Команда пуста')
+    return
   }
-  
-  </script>
-  
-  <style scoped>
-  .command {
-    display: flex;
-    flex-direction: column;
-    gap: 5px;
-  }
-  textarea {
-    font-family: monospace;
-    padding: 0.5rem;
-  }
-  pre {
-    background: #111;
-    color: #0f0;
-    padding: 1rem;
-    white-space: pre-wrap;
-  }
-  .disconnect {
-    background-color: #911;
-    color: white;
-  }
-  </style>
-  
+  emit('send-command', val)
+}
+</script>
+
+<style scoped>
+.card {
+  background: var(--card-bg);
+  border-radius: var(--radius);
+  padding: var(--padding);
+  box-shadow: var(--shadow);
+  color: var(--text-color);
+}
+
+.command {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+  margin-top: 0.5rem;
+}
+
+textarea {
+  font-family: var(--font-mono);
+  background: var(--terminal-bg);
+  color: var(--accent);
+  border: none;
+  padding: 1rem;
+  border-radius: 0.5rem;
+  resize: vertical;
+}
+
+button {
+  align-self: flex-start;
+  background: #3a3a55;
+  border: none;
+  padding: 0.75rem 1rem;
+  border-radius: 0.5rem;
+  color: var(--text-color);
+  font-weight: bold;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+button:hover {
+  background: #505070;
+}
+</style>
