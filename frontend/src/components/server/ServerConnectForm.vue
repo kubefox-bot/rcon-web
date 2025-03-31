@@ -23,15 +23,24 @@ import { encryptedPasswordStorage } from '@/lib/EncryptedPasswordStorage'
   
   const handleConnect = async () => {
     const shifredPass = await encryptedPasswordStorage.encrypt(password.value)
-    const result = await connect({
-      host: host.value,
-      port: port.value,
-      password: shifredPass
-    })
+    const server = {
+    host: host.value,
+    port: port.value,
+    password: shifredPass
+  }
+
+  const result = await connect(server)
   
     result.match(
       () => {
-        serverStorage.save({ host: host.value, port: port.value, password: shifredPass })
+        const alreadyExists = serverStorage
+        .loadAll()
+        .some((s) => s.host === server.host && s.port === server.port)
+        if (!alreadyExists) {
+        serverStorage.save(server)
+      }
+
+        
         setStep('rcon')
       },
       (err) => (error.value = err)

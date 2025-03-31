@@ -1,15 +1,14 @@
 <template>
     <div class="rcon-panel">
-      <ServerStatus :status="statusText" />
-  
       <div v-if="state === 'loading'">
         <p>⏳ Загрузка...</p>
       </div>
   
       <div v-else class="grid">
-        <div class="left">
+        <div class="panels">
           <CommandList @send="handleSend" />
           <MapSelector @send="handleSend" />
+          <ManualCommand @send="handleSend" />
         </div>
   
         <div class="right">
@@ -21,20 +20,26 @@
   
   
   <script setup lang="ts">
-  import { ref } from 'vue'
-  import ServerStatus from './ServerStatus.vue'
-  import CommandList from './panels/CommandList.vue'
+  import { onMounted, ref } from 'vue'
+  import CommandList from './panels/CommandListPanel.vue'
   import TerminalView from './TerminalView.vue'
   import { sendCommand } from '@/handlers'
-import MapSelector from './panels/MapSelector.vue'
+import MapSelector from './panels/MapSelectorPanel.vue'
 import { RconState } from './type'
+import { useServerError } from '@/composables/useServerError'
+import { useServerStatus } from '@/composables/useServerStatus'
+import ManualCommand from './panels/ManualCommandPanel.vue'
+
 
 
 const state = ref<RconState>('ready')
-
+const status = useServerStatus();
+onMounted(()=>{
+    status.checkStatus();
+})
   const output = ref('')
-  const statusText = ref('🟡 Проверка...')
-  
+
+  const { setError, clearError } = useServerError()
   const handleSend = async (cmd: string) => {
     output.value = ''
       state.value = 'loading'
@@ -44,15 +49,15 @@ const state = ref<RconState>('ready')
       .map((res) => res.response)
       .match(
         (res) => {
+    
+          clearError()
           output.value = res
-          if (res.includes('hostname') || res.includes('map')) {
-            statusText.value = '🟢 Онлайн'
-          }
             state.value = 'ready'
+            
         },
         (err) => {
           output.value = `❌ ${err}`
-          statusText.value = '🔴 Ошибка'
+         setError(err);
         }
       )
   }

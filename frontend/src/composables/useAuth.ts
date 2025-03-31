@@ -4,10 +4,12 @@ import { api } from '@/lib/api'
 
 import { Result, ok, err } from 'neverthrow'
 import { jwt } from '@/lib'
+import { useServerError } from './useServerError'
 
 const isAuthenticated = ref(jwt.isAuthenticated())
 
 export function useAuth() {
+  const error = useServerError();
   const login = async (password: string): Promise<Result<'logged-in', string>> => {
     try {
       const res = await api.post('/login', { password })
@@ -19,6 +21,7 @@ export function useAuth() {
       return ok('logged-in')
     } catch (e: any) {
       isAuthenticated.value = false
+      error.setError(e?.response?.data?.message || 'Login failed')
       return err(e?.response?.data?.message || 'Login failed')
     }
   }

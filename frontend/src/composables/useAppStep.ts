@@ -7,6 +7,8 @@ const step = ref<AppStep>('auth')
 
 export function useAppStep() {
   const setStep = (newStep: AppStep) =>{
+
+
     step.value = newStep;
   }
 

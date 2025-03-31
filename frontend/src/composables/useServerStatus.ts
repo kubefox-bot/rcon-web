@@ -1,63 +1,69 @@
 import { ref } from 'vue'
 import { sendCommand, disconnect } from '@/handlers'
-import { useAuth } from './useAuth'
 import { Result } from 'neverthrow'
 
+const output = ref('')
+const isLoading = ref(false)
+const statusText = ref('🟡 Неизвестно')
+
 export function useServerStatus() {
-  const output = ref('')
-  const isLoading = ref(false)
-  const statusText = ref('')
+  const setStatus = (status: string) => {
+    statusText.value = status
+  }
 
-  const auth = useAuth()
-
-  const send = async (cmd: string): Promise<Result<string, string>> => {
+  const send = async (command: string): Promise<Result<string, string>> => {
     isLoading.value = true
     output.value = ''
-  
-    const result = await sendCommand({ command: cmd })
+
+    const result = await sendCommand({ command })
     isLoading.value = false
-  
-    const mapped = result.map((res) => res.response)
-  
-    mapped.match(
-      (res) => (output.value = res),
-      (err) => (output.value = `❌ ${err}`)
-    )
-  
-    return mapped
-  }
-  
 
-  const checkStatus = async () => {
-    const result = await send('status')
-
-    result.match(
-      (res) => {
-        if (res.includes('hostname') || res.includes('map')) {
-          statusText.value = '🟢 Онлайн'
-        } else {
-          statusText.value = '🔴 Оффлайн'
+    result
+      .map((res) => res.response)
+      .match(
+        (res) => {
+          output.value = res
+          // статус можно анализировать по ответу (если не WS)
+          if (command === 'status') {
+            if (res.includes('hostname') || res.includes('map')) {
+              setStatus('🟢 Онлайн')
+            } else {
+              setStatus('🔴 Оффлайн')
+            }
+          }
+        },
+        (err) => {
+          output.value = `❌ ${err}`
+         
         }
-      },
-      () => {
-        statusText.value = '🔴 Оффлайн'
-      }
-    )
+      )
+
+    return result.map((r) => r.response)
   }
+
+  const checkStatus = () => send('status')
 
   const restartMap = () => send('mp_restartgame 1')
 
+  const clearOutput = () => {
+    output.value = ''
+  }
+
   const logout = async () => {
     await disconnect()
+    statusText.value = '🔌 Отключено'
+    output.value = ''
   }
 
   return {
     output,
     isLoading,
     statusText,
+    setStatus,
     checkStatus,
     restartMap,
     logout,
-    send
+    send,
+    clearOutput,
   }
 }
