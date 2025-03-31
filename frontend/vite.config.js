@@ -10,7 +10,7 @@ export default defineConfig(({ mode }) => {
     server: {
       host: env.FRONT_HOST,
       port: Number(env.FRONT_PORT) || 5173,
-      strictPort: true,
+      strictPort: true
     },
     resolve: {
       alias: {
@@ -28,9 +28,6 @@ export default defineConfig(({ mode }) => {
       API_PORT: JSON.stringify(env.PORT),
       FRONT_PORT: JSON.stringify(env.FRONT_PORT),
       FRONT_HOST: JSON.stringify(env.FRONT_HOST)
-    },
-    preview:{
-      allowedHosts: [".batumi.win"]
     }
   }
 })
