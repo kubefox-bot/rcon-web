@@ -1038,6 +1038,7 @@ __metadata:
     "@vitejs/plugin-vue": "npm:^5.2.3"
     "@vue/tsconfig": "npm:^0.7.0"
     axios: "npm:^1.8.4"
+    jwt-decode: "npm:^4.0.0"
     neverthrow: "npm:^8.2.0"
     typescript: "npm:^5.8.2"
     vite: "npm:^6.2.3"
@@ -1265,6 +1266,13 @@ __metadata:
   version: 1.1.0
   resolution: "jsbn@npm:1.1.0"
   checksum: 10c0/4f907fb78d7b712e11dea8c165fe0921f81a657d3443dde75359ed52eb2b5d33ce6773d97985a089f09a65edd80b11cb75c767b57ba47391fee4c969f7215c96
+  languageName: node
+  linkType: hard
+
+"jwt-decode@npm:^4.0.0":
+  version: 4.0.0
+  resolution: "jwt-decode@npm:4.0.0"
+  checksum: 10c0/de75bbf89220746c388cf6a7b71e56080437b77d2edb29bae1c2155048b02c6b8c59a3e5e8d6ccdfd54f0b8bda25226e491a4f1b55ac5f8da04cfbadec4e546c
   languageName: node
   linkType: hard
 

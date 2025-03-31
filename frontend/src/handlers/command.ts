@@ -1,15 +1,10 @@
+// src/handlers/command.ts
+import { sendRconRequest } from './rcon'
 import { CommandPayload, RconResponse } from '@/models'
-import { api } from '@lib'
-
-import { Result, ok, err } from 'neverthrow'
+import { Result } from 'neverthrow'
 
 export async function sendCommand(
-  payload: CommandPayload,
+  payload: CommandPayload
 ): Promise<Result<RconResponse, string>> {
-  try {
-    const res = await api.post('/command', payload)
-    return ok(res.data)
-  } catch (e: any) {
-    return err(e?.response?.data || e.message)
-  }
+  return sendRconRequest<RconResponse>('command', payload)
 }

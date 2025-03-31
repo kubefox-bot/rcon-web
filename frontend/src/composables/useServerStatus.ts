@@ -1,6 +1,6 @@
 import { ref } from 'vue'
 import { sendCommand, disconnect } from '@/handlers'
-import { useAuth } from './auth/useAuth'
+import { useAuth } from './useAuth'
 import { Result } from 'neverthrow'
 
 export function useServerStatus() {
@@ -49,7 +49,6 @@ export function useServerStatus() {
 
   const logout = async () => {
     await disconnect()
-    auth.isAuthenticated.value = false
   }
 
   return {
@@ -59,5 +58,6 @@ export function useServerStatus() {
     checkStatus,
     restartMap,
     logout,
+    send
   }
 }
