@@ -1,17 +1,13 @@
 use axum::{
+    Router,
     extract::{Json, State},
     routing::post,
-    Router,
 };
 
-use crate::{
-    auth::types::*,
-    state::AppState,
-};
+use crate::{auth::types::*, state::AppState};
 
 pub fn routes() -> Router<AppState> {
-    Router::new()
-        .route("/login", post(login))
+    Router::new().route("/login", post(login))
 }
 
 pub async fn login(
@@ -22,11 +18,11 @@ pub async fn login(
         return Err(AuthError::InvalidCredentials);
     }
 
-         let token = state.jwt.issue("rcon-admin", &state).await
-         .map_err(|_| AuthError::TokenError)?;
-     
-
-
+    let token = state
+        .jwt
+        .issue("rcon-admin", &state)
+        .await
+        .map_err(|_| AuthError::TokenError)?;
 
     Ok(Json(AuthResponse {
         access_token: token,

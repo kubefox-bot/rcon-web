@@ -1,6 +1,6 @@
-use axum::response::{IntoResponse, Response};
 use axum::Json;
 use axum::http::StatusCode;
+use axum::response::{IntoResponse, Response};
 use serde::Serialize;
 
 #[derive(Serialize)]
@@ -30,8 +30,6 @@ impl<T: Serialize> ApiResponse<T> {
         })
         .into_response()
     }
-
-  
 
     pub fn error(message: &str, code: StatusCode) -> Response {
         (

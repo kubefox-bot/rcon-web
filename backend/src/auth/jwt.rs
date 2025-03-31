@@ -1,6 +1,6 @@
-use jsonwebtoken::{encode, decode, Header, Validation, EncodingKey, DecodingKey};
-use serde::{Serialize, Deserialize};
-use chrono::{Utc, Duration};
+use chrono::{Duration, Utc};
+use jsonwebtoken::{DecodingKey, EncodingKey, Header, Validation, decode, encode};
+use serde::{Deserialize, Serialize};
 
 use crate::state::AppState;
 
@@ -25,25 +25,8 @@ impl JwtManager {
         }
     }
 
-    pub fn secret(&self) -> &str{
-          &self.secret
-    }
-
-
-    pub fn create(&self, user_id: &str) -> Result<String, jsonwebtoken::errors::Error> {
-        let exp = (Utc::now() + Duration::hours(self.ttl_hours)).timestamp() as usize;
-        let iat = Utc::now().timestamp() as usize;
-        let claims = Claims {
-            sub: user_id.to_string(),
-            exp,
-            iat
-        };
-
-        encode(
-            &Header::default(),
-            &claims,
-            &EncodingKey::from_secret(self.secret.as_bytes()),
-        )
+    pub fn secret(&self) -> &str {
+        &self.secret
     }
 
     pub fn decode(&self, token: &str) -> Option<Claims> {
@@ -56,7 +39,11 @@ impl JwtManager {
         .ok()
     }
 
-    pub async fn issue(&self, user_id: &str, state: &AppState) -> Result<String, jsonwebtoken::errors::Error> {
+    pub async fn issue(
+        &self,
+        user_id: &str,
+        state: &AppState,
+    ) -> Result<String, jsonwebtoken::errors::Error> {
         let now = Utc::now().timestamp() as usize;
         let exp = (Utc::now() + Duration::hours(self.ttl_hours)).timestamp() as usize;
 

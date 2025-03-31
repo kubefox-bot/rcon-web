@@ -1,6 +1,9 @@
-use axum::http::{header::{AUTHORIZATION, CONTENT_TYPE}, HeaderValue, Method};
-use tower_http::cors::CorsLayer;
 use crate::config::Config;
+use axum::http::{
+    HeaderValue, Method,
+    header::{AUTHORIZATION, CONTENT_TYPE},
+};
+use tower_http::cors::CorsLayer;
 
 pub fn build_cors(config: &Config) -> CorsLayer {
     let allowed_origins = config

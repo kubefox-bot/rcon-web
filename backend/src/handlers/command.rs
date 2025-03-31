@@ -1,5 +1,5 @@
+use crate::{models::response::ApiResponse, state::AppState};
 use axum::{http::StatusCode, response::Response};
-use crate::{state::AppState, models::response::ApiResponse};
 use serde_json::json;
 
 pub async fn handle_command(command: String, state: AppState) -> Response {
@@ -7,7 +7,10 @@ pub async fn handle_command(command: String, state: AppState) -> Response {
     if let Some(conn) = lock.as_mut() {
         match conn.cmd(&command).await {
             Ok(response) => ApiResponse::ok(json!({ "response": response })),
-            Err(err) => ApiResponse::<()>::error(&format!("Command error: {err}"), StatusCode::INTERNAL_SERVER_ERROR),
+            Err(err) => ApiResponse::<()>::error(
+                &format!("Command error: {err}"),
+                StatusCode::INTERNAL_SERVER_ERROR,
+            ),
         }
     } else {
         ApiResponse::<()>::error("Not connected", StatusCode::BAD_REQUEST)

@@ -1,18 +1,18 @@
 mod app;
+mod auth;
+mod config;
 mod handlers;
 mod models;
 mod state;
-mod auth;
-mod config;
 
 use app::router::build_router;
 
 use auth::jwt::JwtManager;
+use chrono::Utc;
 use config::Config;
 use state::AppState;
-use tokio::{net::TcpListener, sync::Mutex};
 use std::sync::Arc;
-use chrono::Utc;
+use tokio::{net::TcpListener, sync::Mutex};
 
 #[tokio::main]
 async fn main() {

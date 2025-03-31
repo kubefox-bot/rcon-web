@@ -1,10 +1,9 @@
-use std::sync::Arc;
-use tokio::sync::Mutex;
 use rcon::Connection;
+use std::sync::Arc;
 use tokio::net::TcpStream;
+use tokio::sync::Mutex;
 
 use crate::{auth::jwt::JwtManager, config::Config};
-
 
 #[derive(Clone)]
 pub struct AppState {
