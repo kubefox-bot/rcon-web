@@ -1,6 +1,8 @@
 <template>
           <h3>Result</h3>
-          <pre>{{ props.result }}</pre>
+          
+          <pre v-if="props.result?.length">{{ props.result }}</pre>
+          
 </template>
 
 <script setup lang="ts">
