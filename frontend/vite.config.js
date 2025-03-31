@@ -29,5 +29,8 @@ export default defineConfig(({ mode }) => {
       FRONT_PORT: JSON.stringify(env.FRONT_PORT),
       FRONT_HOST: JSON.stringify(env.FRONT_HOST)
     },
+    preview:{
+      allowedHosts: [".batumi.win"]
+    }
   }
 })
