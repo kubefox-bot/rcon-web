@@ -12,6 +12,7 @@ use config::Config;
 use state::AppState;
 use tokio::{net::TcpListener, sync::Mutex};
 use std::sync::Arc;
+use chrono::Utc;
 
 #[tokio::main]
 async fn main() {
@@ -23,7 +24,8 @@ async fn main() {
     let state = AppState {
         client: Arc::new(Mutex::new(None)),
         jwt: Arc::new(jwt),
-        config: Arc::new(config)
+        config: Arc::new(config),
+        last_issued: Arc::new(Mutex::new(Some(Utc::now().timestamp()))),
     };
 
     let app = build_router(state);

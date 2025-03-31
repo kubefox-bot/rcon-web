@@ -2,10 +2,13 @@ use jsonwebtoken::{encode, decode, Header, Validation, EncodingKey, DecodingKey}
 use serde::{Serialize, Deserialize};
 use chrono::{Utc, Duration};
 
+use crate::state::AppState;
+
 #[derive(Debug, Serialize, Deserialize)]
 pub struct Claims {
     pub sub: String,
     pub exp: usize,
+    pub iat: usize,
 }
 
 #[derive(Debug, Clone)]
@@ -26,16 +29,14 @@ impl JwtManager {
           &self.secret
     }
 
-    pub fn with_ttl(mut self, hours: i64) -> Self {
-        self.ttl_hours = hours;
-        self
-    }
 
-    pub fn encode(&self, user_id: &str) -> Result<String, jsonwebtoken::errors::Error> {
+    pub fn create(&self, user_id: &str) -> Result<String, jsonwebtoken::errors::Error> {
         let exp = (Utc::now() + Duration::hours(self.ttl_hours)).timestamp() as usize;
+        let iat = Utc::now().timestamp() as usize;
         let claims = Claims {
             sub: user_id.to_string(),
             exp,
+            iat
         };
 
         encode(
@@ -53,5 +54,24 @@ impl JwtManager {
         )
         .map(|data| data.claims)
         .ok()
+    }
+
+    pub async fn issue(&self, user_id: &str, state: &AppState) -> Result<String, jsonwebtoken::errors::Error> {
+        let now = Utc::now().timestamp() as usize;
+        let exp = (Utc::now() + Duration::hours(self.ttl_hours)).timestamp() as usize;
+
+        let claims = Claims {
+            sub: user_id.to_string(),
+            iat: now,
+            exp,
+        };
+
+        *state.last_issued.lock().await = Some(now as i64);
+
+        encode(
+            &Header::default(),
+            &claims,
+            &EncodingKey::from_secret(self.secret.as_bytes()),
+        )
     }
 }

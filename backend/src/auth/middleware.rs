@@ -20,7 +20,21 @@ pub async fn auth_middleware(
         .and_then(|h| h.strip_prefix("Bearer "));
 
     match token {
-        Some(t) if state.jwt.decode(t).is_some() => Ok(next.run(req).await),
-        _ => Err(StatusCode::UNAUTHORIZED),
+        Some(t) => {
+            if let Some(claims) = state.jwt.decode(t) {
+                let last = state.last_issued.lock().await;
+                let iat = claims.iat as i64;
+                if let Some(revoked_after) = *last {
+                    if iat < revoked_after {
+                        return Err(StatusCode::UNAUTHORIZED);
+                    }
+                }
+                Ok(next.run(req).await)
+            } else {
+                Err(StatusCode::UNAUTHORIZED)
+            }
+        }
+        None => Err(StatusCode::UNAUTHORIZED),
     }
 }
+

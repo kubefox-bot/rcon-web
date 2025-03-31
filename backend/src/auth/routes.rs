@@ -1,8 +1,9 @@
 use axum::{
     extract::{Json, State},
-    routing::{post},
+    routing::post,
     Router,
 };
+
 use crate::{
     auth::types::*,
     state::AppState,
@@ -21,10 +22,11 @@ pub async fn login(
         return Err(AuthError::InvalidCredentials);
     }
 
-    let token = state
-        .jwt
-        .encode("rcon-admin")
-        .map_err(|_| AuthError::TokenError)?;
+         let token = state.jwt.issue("rcon-admin", &state).await
+         .map_err(|_| AuthError::TokenError)?;
+     
+
+
 
     Ok(Json(AuthResponse {
         access_token: token,
