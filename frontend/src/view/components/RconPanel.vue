@@ -1,25 +1,27 @@
 <template>
     <div class="panel">
       <h2>🖥️ CS2 RCON Panel</h2>
-      <textarea v-model="command" placeholder="Enter command..." rows="4" />
-      <button @click="send">Send Command</button>
       <button @click="logout" class="disconnect">Disconnect</button>
-      <pre>{{ output }}</pre>
+      <MapSelector @send-command="send"/>
+      <CommandPanel @send-command="send" @logout="logout" />
+      <TerminalResult :result="output"/>
     </div>
   </template>
   
   <script setup lang="ts">
-  import { ref } from 'vue'
-
-  import { sendCommand } from '@/handlers'
-  import { useAuth } from './useAuth'
+import { ref } from 'vue'
+import MapSelector from './MapSelector.vue'
+import CommandPanel from './CommandPanel.vue'
+import { sendCommand } from '@/handlers'
+import { useAuth } from './useAuth'
+import TerminalResult from './TerminalResult.vue'
   
   const auth = useAuth()
-  const command = ref('')
   const output = ref('')
   
-  const send = async () => {
-    const result = await sendCommand({ command: command.value })
+  const send = async (cmd: string) => {
+    if (!cmd) return
+    const result = await sendCommand({ command: cmd })
     output.value = result.isOk() ? result.value.response : `❌ ${result.error}`
   }
   
@@ -40,15 +42,16 @@
     font-family: monospace;
     padding: 0.5rem;
   }
-  pre {
-    background: #111;
-    color: #0f0;
-    padding: 1rem;
-    white-space: pre-wrap;
-  }
+  
   .disconnect {
     background-color: #911;
     color: white;
+  }
+
+  .command{
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
   }
   </style>
   
