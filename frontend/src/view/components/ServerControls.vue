@@ -27,9 +27,9 @@
 
 <script setup lang="ts">
 
-import { ref, computed, onMounted } from 'vue'
+import { computed, onMounted } from 'vue'
 import { useConnectionForm } from './auth/useConnectionForm';
-import { useAuth } from './auth/useAuth';
+
 import { useServerStatus } from './useServerStatus';
 
 const emit = defineEmits<{
@@ -38,12 +38,7 @@ const emit = defineEmits<{
 
 const { statusText, isLoading, logout, checkStatus } = useServerStatus()
 
-const auth = useAuth()
-
-console.log(auth, useConnectionForm())
 const { host, port } = useConnectionForm()
-
-
 
 const statusClass = computed(() => {
   if (statusText.value.includes('🟢')) return 'online'

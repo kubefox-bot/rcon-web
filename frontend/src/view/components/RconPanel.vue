@@ -27,8 +27,15 @@ const output = ref('')
 
 const send = async (cmd: string) => {
   const result = await sendCommand({ command: cmd })
-  output.value = result.isOk() ? result.value.response : `❌ ${result.error}`
+
+  result
+    .map((res) => res.response)
+    .match(
+      (res) => (output.value = res),
+      (err) => (output.value = `❌ ${err}`)
+    )
 }
+
 </script>
 
 <style scoped>
@@ -38,9 +45,10 @@ const send = async (cmd: string) => {
   grid-template-rows: auto 1fr;
   gap: 2rem;
   max-width: 1200px;
-  margin: 2rem auto;
+  width: 100%;
   padding: 1rem;
-  height: calc(100vh - 4rem);
+  height: calc(100vh - 20rem);
+  margin-inline: auto;
 }
 
 .full-width {
@@ -51,11 +59,14 @@ const send = async (cmd: string) => {
   display: flex;
   flex-direction: column;
   gap: 1.5rem;
+  height: 100%; 
 }
 
 .terminal {
   display: flex;
   flex-direction: column;
-  height: 100%;
+  height: 100%; 
+  overflow: hidden;
 }
+
 </style>
