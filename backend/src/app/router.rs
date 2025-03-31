@@ -1,19 +1,19 @@
-use axum::{http::Method, routing::{get, post}, Router};
-use tower_http::cors::{CorsLayer, Any};
-use crate::{handlers::{connect, command, disconnect}, state::AppState};
+use axum::{Router, middleware::from_fn_with_state, Extension};
+use crate::{
+    auth::{self, middleware::auth_middleware},
+    handlers::routes::routes,
+    state::AppState,
+};
+use super::cors::build_cors;
 
 pub fn build_router(state: AppState) -> Router {
-
-    let cors = CorsLayer::new()
-    .allow_origin(Any) // или .allow_origin("http://localhost:5173".parse::<HeaderValue>().unwrap())
-    .allow_methods([Method::GET, Method::POST])
-    .allow_headers(Any);
-
     Router::new()
-        .route("/", get(|| async { "CS2 RCON Rust API" }))
-        .route("/connect", post(connect::handler))
-        .route("/command", post(command::handler))
-        .route("/disconnect", post(disconnect::handler))
+        .merge(auth::routes())
+        .merge(
+            routes()
+                .layer(from_fn_with_state(state.clone(), auth_middleware))
+                .layer(Extension(state.clone())), 
+        )
+        .layer(build_cors(&state.config))
         .with_state(state)
-        .layer(cors)
 }

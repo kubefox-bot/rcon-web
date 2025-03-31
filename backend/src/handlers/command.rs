@@ -1,16 +1,14 @@
-use axum::{extract::{State, Json}, http::HeaderMap, response::IntoResponse, http::StatusCode};
+use axum::{extract::{State, Json}, response::IntoResponse, http::StatusCode};
 use serde_json::json;
 
-use crate::{auth::check_auth, state::AppState, models::CommandRequest};
+use crate::{state::AppState, models::CommandRequest};
 
 pub async fn handler(
     State(state): State<AppState>,
-    headers: HeaderMap,
+
     Json(payload): Json<CommandRequest>,
 ) -> impl IntoResponse {
-    if !check_auth(&headers, &state.auth_token) {
-        return (StatusCode::UNAUTHORIZED, "Invalid token").into_response();
-    }
+   
 
     let mut lock = state.client.lock().await;
     if let Some(conn) = lock.as_mut() {
