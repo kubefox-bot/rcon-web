@@ -1,4 +1,3 @@
-// src/lib/EncryptedPasswordStorage.ts
 import { CryptoStorage } from './cryptoStorage'
 import { config } from '@/config'
 
@@ -20,7 +19,7 @@ export class EncryptedPasswordStorage {
 
     try {
       return await this.crypto.encrypt(password)
-    } catch (e: any) {
+    } catch (e: unknown) {
       console.warn('⚠️ Ошибка при шифровании:', e)
       return null
     }
@@ -33,7 +32,7 @@ export class EncryptedPasswordStorage {
 
     try {
       return await this.crypto.decrypt(encrypted)
-    } catch (e: any) {
+    } catch (e: unknown) {
       console.warn('⚠️ Ошибка при расшифровке:', e)
       return null
     }

@@ -1,4 +1,3 @@
-// src/lib/JwtStorage.ts
 import { Singleton } from '@/utils/singleton'
 import { jwtDecode } from 'jwt-decode'
 import { Result, ok, err } from 'neverthrow'
@@ -44,5 +43,4 @@ export class JwtStorage {
   }
 }
 
-
-export const jwt = new JwtStorage();
+export const jwt = new JwtStorage()

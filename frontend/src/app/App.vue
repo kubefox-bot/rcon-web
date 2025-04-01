@@ -1,32 +1,28 @@
 <template>
   <main>
     <h1>🎮 RCON CLIENT</h1>
+    <FlashMessage />
     <ServerStatus :status="statusText" />
     <component :is="currentComponent" />
   </main>
 </template>
 
 <script setup lang="ts">
-import { computed, onMounted, ref } from 'vue'
+import { computed, onMounted } from 'vue'
 import { useAppStep } from '@/composables/useAppStep'
 import LoginForm from '@/components/auth/LoginForm.vue'
 import ServerView from '@/components/server/ServerView.vue'
 import RconPanel from '@/components/rcon/RconPanel.vue'
 import ServerStatus from '@/components/status/ServerStatus.vue'
 import { useServerStatus } from '@/composables/useServerStatus'
-
-
+import FlashMessage from '@/components/shared/FlasMessage.vue'
 const { step, initStep } = useAppStep()
 
 onMounted(() => {
-  initStep();
-
-
+  initStep()
 })
 
-const {
-  statusText,
-} = useServerStatus()
+const { statusText } = useServerStatus()
 
 const currentComponent = computed(() => {
   switch (step.value) {
@@ -41,3 +37,24 @@ const currentComponent = computed(() => {
   }
 })
 </script>
+
+<style scoped lang="scss">
+@use '@/styles/variables' as *;
+main {
+  background: $bg-dark;
+  color: $text-color;
+  font-family: $font-main;
+  padding: 2rem;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+
+  h1 {
+    font-size: 2rem;
+    margin-bottom: 1.5rem;
+    color: $accent;
+    letter-spacing: 1px;
+  }
+}
+</style>
