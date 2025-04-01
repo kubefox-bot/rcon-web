@@ -27,7 +27,7 @@ const maps = [
 
 <style scoped lang="scss">
 @use '@/styles/variables' as *;
-
+@use 'sass:color';
 .panel {
   background: $bg-panel;
   border-radius: $radius;
@@ -68,7 +68,7 @@ const maps = [
         transition: background 0.2s ease;
 
         &:hover {
-          background: lighten($accent, 10%);
+          background: color.adjust($accent, $lightness: 10%);
         }
       }
     }

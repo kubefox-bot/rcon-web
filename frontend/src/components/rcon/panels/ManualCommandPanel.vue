@@ -24,7 +24,7 @@ const handleSubmit = () => {
 
 <style scoped lang="scss">
 @use '@/styles/variables' as *;
-
+@use 'sass:color';
 .panel {
   background: $bg-panel;
   border-radius: $radius;
@@ -65,7 +65,7 @@ const handleSubmit = () => {
       font-weight: bold;
 
       &:hover {
-        background: lighten($accent, 10%);
+        background: color.adjust($accent, $lightness: 10%);
       }
     }
   }

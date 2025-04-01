@@ -45,7 +45,7 @@ const handleConnect = async () => {
 
 <style scoped lang="scss">
 @use '@/styles/variables' as *;
-
+@use 'sass:color';
 .connect-form {
   background: $bg-panel;
   padding: $padding;
@@ -98,7 +98,7 @@ const handleConnect = async () => {
     transition: background 0.2s ease;
 
     &:hover {
-      background: lighten($accent, 10%);
+      background: color.adjust($accent, $lightness: 10%);
     }
   }
 

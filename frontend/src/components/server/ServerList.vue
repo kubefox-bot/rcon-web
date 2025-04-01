@@ -45,6 +45,7 @@ const remove = (index: number) => {
 
 <style scoped lang="scss">
 @use '@/styles/variables' as *;
+@use 'sass:color';
 
 .server-list {
   display: flex;
@@ -78,7 +79,7 @@ const remove = (index: number) => {
     transition: background 0.2s ease;
 
     &:hover {
-      background: lighten($bg-dark, 5%);
+      background: color.adjust($bg-dark, $lightness: 10%);
     }
 
     .info {
@@ -102,7 +103,7 @@ const remove = (index: number) => {
         transition: background 0.2s ease;
 
         &:hover {
-          background: lighten($accent, 10%);
+          background: color.adjust($accent, $lightness: 10%);
         }
 
         &.danger {
@@ -110,7 +111,7 @@ const remove = (index: number) => {
           color: #fff;
 
           &:hover {
-            background: lighten($error, 10%);
+            background: color.adjust($error, $lightness: 10%);
           }
         }
       }

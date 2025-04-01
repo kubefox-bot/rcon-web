@@ -17,7 +17,7 @@ defineEmits<{
 
 <style scoped lang="scss">
 @use '@/styles/variables' as *;
-
+@use 'sass:color';
 .ui-button {
   padding: 0.5rem 0.75rem;
   border-radius: $radius;
@@ -33,7 +33,7 @@ defineEmits<{
   color: #000;
 
   &:hover {
-    background: lighten($accent, 10%);
+    background: color.adjust($accent, $lightness: 10%);
   }
 }
 
@@ -42,7 +42,7 @@ defineEmits<{
   color: #fff;
 
   &:hover {
-    background: lighten($error, 10%);
+    background: color.adjust($error, $lightness: 10%);
   }
 }
 
