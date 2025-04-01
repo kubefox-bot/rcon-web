@@ -1,4 +1,3 @@
-// src/handlers/command.ts
 import { sendRconRequest } from './rcon'
 import { CommandPayload, RconResponse } from '@/models'
 import { Result } from 'neverthrow'
