@@ -9,7 +9,7 @@
     "lint": "eslint . --ext .ts,.vue",
     "format": "prettier --check .",
     "format:fix": "prettier --write .",
-    "preview:prod": "yarn dlx serve dist -l 4173"
+    "preview:prod": "serve dist -l 4173"
   },
   "packageManager": "yarn@4.8.1",
   "dependencies": {
