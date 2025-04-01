@@ -1,15 +1,17 @@
 import { ref, computed } from 'vue'
 import { api } from '@/lib/api'
-
 import { Result, ok, err } from 'neverthrow'
 import { jwt } from '@/lib'
-import { useServerError } from './useServerError'
+import { useFlashMessage } from './useFlashMessage'
 import { useAppStep } from './useAppStep'
+import { AxiosError } from 'axios'
 
 const isAuthenticated = ref(jwt.isAuthenticated())
 
 export function useAuth() {
-  const error = useServerError()
+  const flash = useFlashMessage()
+  const { setStep } = useAppStep()
+
   const login = async (password: string): Promise<Result<'logged-in', string>> => {
     try {
       const res = await api.post('/login', { password })
@@ -19,17 +21,25 @@ export function useAuth() {
       jwt.setToken(token)
       isAuthenticated.value = true
       return ok('logged-in')
-      // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    } catch (e: any) {
+    } catch (error) {
+      const axiosError = error as AxiosError<{ message?: string }>
+
       isAuthenticated.value = false
-      error.setError(e?.response?.data?.message || 'Login failed')
-      return err(e?.response?.data?.message || 'Login failed')
+      const message = axiosError.response?.data?.message || 'Login failed'
+      flash.show(`❌ ${message}`)
+
+      return err(message)
     }
   }
 
-  const logout = async () => {
+  const logout = (forceMessage = false) => {
     jwt.removeToken()
     isAuthenticated.value = false
+    setStep('auth')
+
+    if (forceMessage) {
+      flash.show('⚠️ Сессия истекла. Войдите снова.')
+    }
   }
 
   return {
@@ -39,8 +49,4 @@ export function useAuth() {
   }
 }
 
-export function forceLogout() {
-  jwt.removeToken()
-  isAuthenticated.value = false
-  useAppStep().setStep('auth')
-}
+export const forceLogout = () => useAuth().logout(true)
