@@ -22,8 +22,10 @@ WORKDIR /app
 COPY --from=builder /app/dist ./dist
 COPY --from=builder /app/package.json /app/yarn.lock /app/.yarnrc.yml /app/.yarn/ ./
 
-RUN yarn install --immutable
+RUN yarn workspaces focus --production
+
 
 EXPOSE 4173
 
-CMD ["yarn", "preview", "--host"]
+CMD ["yarn", "preview:prod"]
+

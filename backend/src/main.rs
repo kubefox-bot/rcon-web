@@ -24,7 +24,6 @@ async fn main() {
     let state = AppState {
         client: Arc::new(Mutex::new(None)),
         jwt: Arc::new(jwt),
-        config: Arc::new(config),
         last_issued: Arc::new(Mutex::new(Some(Utc::now().timestamp()))),
     };
 

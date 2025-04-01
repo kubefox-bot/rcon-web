@@ -7,11 +7,20 @@ export default defineConfig(({ mode }) => {
 
   return {
     plugins: [vue(), eslint()],
-
+    preview: {
+      host: true,
+      allowedHosts: true
+    },
+    
     server: {
-      host: env.FRONT_HOST,
+      host: '0.0.0.0',
       port: Number(env.FRONT_PORT) || 5173,
-      strictPort: true,
+      proxy: {
+        '/api': {
+          target: 'http://localhost:3000',
+          changeOrigin: true,
+        },
+      },
     },
     resolve: {
       alias: {
@@ -25,11 +34,11 @@ export default defineConfig(({ mode }) => {
     },
     define: {
       AUTH_TOKEN: JSON.stringify(env.AUTH_TOKEN),
+      ENCRYPTION_KEY: JSON.stringify(env.ENCRYPTION_KEY),
       API_HOST: JSON.stringify(env.API_HOST),
       API_PORT: JSON.stringify(env.PORT),
       FRONT_PORT: JSON.stringify(env.FRONT_PORT),
       FRONT_HOST: JSON.stringify(env.FRONT_HOST),
-      ENCRYPTION_KEY: JSON.stringify(env.ENCRYPTION_KEY),
     },
   }
 })
