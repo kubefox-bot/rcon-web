@@ -1,4 +1,3 @@
-// src/composables/useAppStep.ts
 import { jwt } from '@/lib'
 import { ref } from 'vue'
 import { useFlashMessage } from './useFlashMessage'

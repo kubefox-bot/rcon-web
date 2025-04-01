@@ -1,4 +1,3 @@
-// src/lib/cryptoStorage.ts
 export class CryptoStorage {
   constructor(private readonly key: string) {}
 
