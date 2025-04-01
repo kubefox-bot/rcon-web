@@ -12,6 +12,8 @@
       "isolatedModules": true,
       "noEmit": true,
       "resolveJsonModule": true,
+      "experimentalDecorators": true,
+      "emitDecoratorMetadata": true,
       "jsx": "preserve",
       "types": ["vite/client"],
       "baseUrl": "./src",

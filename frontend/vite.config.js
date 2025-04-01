@@ -27,7 +27,8 @@ export default defineConfig(({ mode }) => {
       API_HOST: JSON.stringify(env.API_HOST),
       API_PORT: JSON.stringify(env.PORT),
       FRONT_PORT: JSON.stringify(env.FRONT_PORT),
-      FRONT_HOST: JSON.stringify(env.FRONT_HOST)
+      FRONT_HOST: JSON.stringify(env.FRONT_HOST),
+      ENCRYPTION_KEY: JSON.stringify(env.ENCRYPTION_KEY)
     }
   }
 })
