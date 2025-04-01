@@ -15,48 +15,26 @@
   import { useAppStep } from '@/composables/useAppStep'
   import { serverStorage } from '@/lib/serverStorage'
   import { useConnectionForm } from '@/composables/useConnectionForm'
-import { encryptedPasswordStorage } from '@/lib/EncryptedPasswordStorage'
+  import { useServerConnect } from '@/composables/useServerConnect'
   
-  const { host, port, password, connect } = useConnectionForm()
+  const { host, port, password } = useConnectionForm()
+  const { connect } = useServerConnect()
   const { setStep } = useAppStep()
   const error = ref('')
   
   const handleConnect = async () => {
   error.value = ''
+  const result = await connect({
+    host: host.value,
+    port: port.value,
+    password: password.value,
+  })
 
-  const encryptedResult = await encryptedPasswordStorage.encrypt(password.value)
-
-  encryptedResult.match(
-    async (shifredPass) => {
-      const server = {
-        host: host.value,
-        port: port.value,
-        password: shifredPass,
-      }
-
-      const result = await connect(server)
-
-      result.match(
-        () => {
-          const alreadyExists = serverStorage
-            .loadAll()
-            .some((s) => s.host === server.host && s.port === server.port)
-
-          if (!alreadyExists) {
-            serverStorage.save(server)
-          }
-
-          setStep('rcon')
-        },
-        (err) => {
-          error.value = err
-        }
-      )
-    },
-    (err) => {
-      error.value = err
-    }
+  result.match(
+    () => setStep('rcon'),
+    (err) => (error.value = err)
   )
 }
   </script>
+  
   

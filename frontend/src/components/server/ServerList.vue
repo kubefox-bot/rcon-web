@@ -18,24 +18,22 @@
   import { ref } from 'vue'
   import { useAppStep } from '@/composables/useAppStep'
   import { serverStorage, StoredServer } from '@/lib/serverStorage'
-  import { useConnectionForm } from '@/composables/useConnectionForm'
+import { useServerConnect } from '@/composables/useServerConnect'
   
   const servers = ref<StoredServer[]>(serverStorage.loadAll())
   const passwords = ref<string[]>(servers.value.map(() => ''))
   
-  const { connect } = useConnectionForm()
+  const { connect } = useServerConnect()
   const { setStep } = useAppStep()
-  
+
   const connectTo = async (server: StoredServer) => {
-    
-    
-    const result = await connect(server)
-  
-    result.match(
-      () => setStep('rcon'),
-      (err) => alert(`Ошибка подключения: ${err}`)
-    )
-  }
+  const result = await connect(server, true)
+
+  result.match(
+    () => setStep('rcon'),
+    (err) => alert(`Ошибка подключения: ${err}`)
+  )
+}
   
   
   const remove = (index: number) => {

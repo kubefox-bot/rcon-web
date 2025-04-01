@@ -1,6 +1,6 @@
+// src/lib/EncryptedPasswordStorage.ts
 import { CryptoStorage } from './cryptoStorage'
 import { config } from '@/config'
-import { Result, ok, err } from 'neverthrow'
 
 export class EncryptedPasswordStorage {
   private crypto: CryptoStorage | null = null
@@ -13,32 +13,29 @@ export class EncryptedPasswordStorage {
     }
   }
 
-  async encrypt(password: string): Promise<Result<string, string>> {
+  async encrypt(password: string): Promise<string | null> {
     if (!this.crypto) {
-      return ok(password) // Возвращаем "как есть"
+      return password
     }
 
     try {
-      const encrypted = await this.crypto.encrypt(password)
-      return ok(encrypted)
+      return await this.crypto.encrypt(password)
     } catch (e: any) {
       console.warn('⚠️ Ошибка при шифровании:', e)
-      return err('Ошибка шифрования')
+      return null
     }
   }
 
-  async decrypt(encrypted: string): Promise<Result<string, string>> {
+  async decrypt(encrypted: string): Promise<string | null> {
     if (!this.crypto) {
-      return ok(encrypted)
+      return encrypted
     }
 
     try {
-      const decrypted = await this.crypto.decrypt(encrypted)
-      if (!decrypted) return err('Не удалось расшифровать пароль')
-      return ok(decrypted)
+      return await this.crypto.decrypt(encrypted)
     } catch (e: any) {
       console.warn('⚠️ Ошибка при расшифровке:', e)
-      return err('Ошибка расшифровки')
+      return null
     }
   }
 }
