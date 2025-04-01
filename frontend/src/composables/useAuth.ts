@@ -1,10 +1,10 @@
-// src/composables/useAuth.ts
 import { ref, computed } from 'vue'
 import { api } from '@/lib/api'
 
 import { Result, ok, err } from 'neverthrow'
 import { jwt } from '@/lib'
 import { useServerError } from './useServerError'
+import { useAppStep } from './useAppStep'
 
 const isAuthenticated = ref(jwt.isAuthenticated())
 
@@ -37,4 +37,10 @@ export function useAuth() {
     login,
     logout,
   }
+}
+
+export function forceLogout() {
+  jwt.removeToken()
+  isAuthenticated.value = false
+  useAppStep().setStep('auth')
 }

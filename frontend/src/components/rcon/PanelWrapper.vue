@@ -60,7 +60,9 @@ const { isOpen, toggle } = usePersistentPanelState(panelId, true)
 
 .collapse-enter-active,
 .collapse-leave-active {
-  transition: max-height 0.3s ease, opacity 0.3s ease;
+  transition:
+    max-height 0.3s ease,
+    opacity 0.3s ease;
   overflow: hidden;
 }
 
@@ -75,5 +77,4 @@ const { isOpen, toggle } = usePersistentPanelState(panelId, true)
   max-height: 500px;
   opacity: 1;
 }
-
 </style>

@@ -1,6 +1,7 @@
 <template>
   <main>
     <h1>🎮 RCON CLIENT</h1>
+    <FlashMessage />
     <ServerStatus :status="statusText" />
     <component :is="currentComponent" />
   </main>
@@ -14,7 +15,7 @@ import ServerView from '@/components/server/ServerView.vue'
 import RconPanel from '@/components/rcon/RconPanel.vue'
 import ServerStatus from '@/components/status/ServerStatus.vue'
 import { useServerStatus } from '@/composables/useServerStatus'
-
+import FlashMessage from '@/components/shared/FlasMessage.vue'
 const { step, initStep } = useAppStep()
 
 onMounted(() => {

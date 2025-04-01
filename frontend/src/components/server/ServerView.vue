@@ -37,4 +37,3 @@ import ServerConnectForm from './ServerConnectForm.vue'
   color: var(--text-color);
 }
 </style>
-
