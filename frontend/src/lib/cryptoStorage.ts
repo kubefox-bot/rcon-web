@@ -34,13 +34,17 @@ export class CryptoStorage {
     }
   
     private async importKey(): Promise<CryptoKey> {
-      return crypto.subtle.importKey(
-        'raw',
-        new TextEncoder().encode(this.key),
-        'AES-GCM',
-        false,
-        ['encrypt', 'decrypt']
-      )
+      if (!this.key) {
+        throw new Error('Encryption key is missing')
+      }
+    
+      const rawKey = new TextEncoder().encode(this.key)
+      if (rawKey.length !== 16 && rawKey.length !== 32) {
+        throw new Error(`Encryption key must be 16 or 32 bytes, got ${rawKey.length}`)
+      }
+    
+      return crypto.subtle.importKey('raw', rawKey, 'AES-GCM', false, ['encrypt', 'decrypt'])
     }
+    
   }
   
