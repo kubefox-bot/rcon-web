@@ -36,3 +36,24 @@ const currentComponent = computed(() => {
   }
 })
 </script>
+
+<style scoped lang="scss">
+@use '@/styles/variables' as *;
+main {
+  background: $bg-dark;
+  color: $text-color;
+  font-family: $font-main;
+  padding: 2rem;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+
+  h1 {
+    font-size: 2rem;
+    margin-bottom: 1.5rem;
+    color: $accent;
+    letter-spacing: 1px;
+  }
+}
+</style>

@@ -1,23 +1,30 @@
 <template>
-  <div>
+  <div class="server-status">
     <h3>Статус сервера: {{ status }}</h3>
-
-    <p v-if="errorMessage" class="error">❌ {{ errorMessage }}</p>
+    <GlobalLoader />
   </div>
 </template>
 
 <script setup lang="ts">
-import { useServerError } from '@/composables/useServerError'
+import GlobalLoader from '../shared/GlobalLoader.vue'
 
 defineProps<{ status: string }>()
-
-const { errorMessage } = useServerError()
 </script>
 
-<style scoped>
-.error {
-  color: var(--error, red);
-  font-weight: bold;
-  margin-top: 0.5rem;
+<style scoped lang="scss">
+@use '@/styles/variables' as *;
+
+.server-status {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  margin-bottom: 1rem;
+
+  h3 {
+    color: $accent;
+    margin: 0;
+    font-weight: 500;
+    font-size: 1.1rem;
+  }
 }
 </style>

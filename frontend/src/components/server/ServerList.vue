@@ -1,12 +1,14 @@
 <template>
-  <div>
-    <h2>Выберите сервер</h2>
+  <div class="server-list">
+    <h2>Сохранённые серверы</h2>
 
     <ul v-if="servers.length">
-      <li v-for="(s, i) in servers" :key="i">
-        {{ s.host }}:{{ s.port }}
-        <button @click="connectTo(s)">Подключиться</button>
-        <button @click="remove(i)">Delete</button>
+      <li v-for="(s, i) in servers" :key="i" class="server-card">
+        <span class="info">{{ s.host }}:{{ s.port }}</span>
+        <div class="actions">
+          <BaseButton @click="connectTo(s)" title="Подключиться">🔌</BaseButton>
+          <BaseButton class="danger" @click="remove(i)" title="Удалить">🗑️</BaseButton>
+        </div>
       </li>
     </ul>
 
@@ -19,9 +21,9 @@ import { ref } from 'vue'
 import { useAppStep } from '@/composables/useAppStep'
 import { serverStorage, StoredServer } from '@/lib/serverStorage'
 import { useServerConnect } from '@/composables/useServerConnect'
+import BaseButton from '../shared/BaseButton.vue'
 
 const servers = ref<StoredServer[]>(serverStorage.loadAll())
-const passwords = ref<string[]>(servers.value.map(() => ''))
 
 const { connect } = useServerConnect()
 const { setStep } = useAppStep()
@@ -38,6 +40,87 @@ const connectTo = async (server: StoredServer) => {
 const remove = (index: number) => {
   serverStorage.remove(index)
   servers.value = serverStorage.loadAll()
-  passwords.value = servers.value.map(() => '')
 }
 </script>
+
+<style scoped lang="scss">
+@use '@/styles/variables' as *;
+
+.server-list {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+
+  h2 {
+    margin-top: 0;
+    color: $accent;
+    font-size: 1.25rem;
+    text-align: center;
+  }
+
+  ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+  }
+
+  .server-card {
+    background: $bg-dark;
+    border: 1px solid $border-color;
+    padding: 1rem;
+    border-radius: $radius;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    transition: background 0.2s ease;
+
+    &:hover {
+      background: lighten($bg-dark, 5%);
+    }
+
+    .info {
+      color: $text-color;
+      font-size: 1rem;
+      font-family: $font-main;
+    }
+
+    .actions {
+      display: flex;
+      gap: 0.5rem;
+
+      button {
+        background: $accent;
+        border: none;
+        padding: 0.5rem 0.75rem;
+        border-radius: $radius;
+        cursor: pointer;
+        font-weight: bold;
+        color: #000;
+        transition: background 0.2s ease;
+
+        &:hover {
+          background: lighten($accent, 10%);
+        }
+
+        &.danger {
+          background: $error;
+          color: #fff;
+
+          &:hover {
+            background: lighten($error, 10%);
+          }
+        }
+      }
+    }
+  }
+
+  p {
+    color: $text-color;
+    text-align: center;
+    margin-top: 1rem;
+  }
+}
+</style>

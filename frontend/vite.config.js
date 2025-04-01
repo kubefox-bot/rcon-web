@@ -2,12 +2,12 @@ import { defineConfig, loadEnv } from 'vite'
 import vue from '@vitejs/plugin-vue'
 import eslint from 'vite-plugin-eslint'
 import path from 'path'
-import UnoCSS from 'unocss/vite'
 export default defineConfig(({ mode }) => {
   const env = loadEnv(mode, process.cwd(), '')
 
   return {
-    plugins: [vue(), eslint(), UnoCSS()],
+    plugins: [vue(), eslint()],
+
     server: {
       host: env.FRONT_HOST,
       port: Number(env.FRONT_PORT) || 5173,

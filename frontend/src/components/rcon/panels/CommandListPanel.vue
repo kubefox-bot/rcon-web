@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div class="panel">
     <h3>Команды</h3>
     <ul>
       <li>
@@ -17,6 +17,46 @@
 
 <script setup lang="ts">
 import { RconSendEvent } from '../type'
-
 const emit = defineEmits<RconSendEvent>()
 </script>
+
+<style scoped lang="scss">
+@use '@/styles/variables' as *;
+
+.panel {
+  background: $bg-panel;
+  border-radius: $radius;
+  padding: $padding;
+  box-shadow: $shadow;
+  margin-bottom: 1rem;
+
+  h3 {
+    color: $accent;
+    margin-bottom: 1rem;
+    margin: 0 auto;
+  }
+
+  ul {
+    list-style: none;
+    padding: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+
+    button {
+      background: $accent;
+      border: none;
+      padding: 0.5rem 0.75rem;
+      border-radius: $radius;
+      cursor: pointer;
+      font-weight: bold;
+      color: #000;
+      transition: background 0.2s ease;
+
+      &:hover {
+        background: lighten($accent, 10%);
+      }
+    }
+  }
+}
+</style>
