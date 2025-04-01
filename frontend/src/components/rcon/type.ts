@@ -1,6 +1,5 @@
 export type RconSendEvent = {
-    (e: 'send', command: string): void
-  }
-  
+  (e: 'send', command: string): void
+}
 
-  export type RconState = 'loading' | 'ready'
+export type RconState = 'loading' | 'ready'

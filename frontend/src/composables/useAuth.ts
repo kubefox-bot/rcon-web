@@ -9,7 +9,7 @@ import { useServerError } from './useServerError'
 const isAuthenticated = ref(jwt.isAuthenticated())
 
 export function useAuth() {
-  const error = useServerError();
+  const error = useServerError()
   const login = async (password: string): Promise<Result<'logged-in', string>> => {
     try {
       const res = await api.post('/login', { password })
@@ -19,6 +19,7 @@ export function useAuth() {
       jwt.setToken(token)
       isAuthenticated.value = true
       return ok('logged-in')
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
     } catch (e: any) {
       isAuthenticated.value = false
       error.setError(e?.response?.data?.message || 'Login failed')

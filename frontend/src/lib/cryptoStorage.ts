@@ -6,11 +6,7 @@ export class CryptoStorage {
     const enc = new TextEncoder()
     const key = await this.importKey()
     const iv = crypto.getRandomValues(new Uint8Array(12))
-    const encrypted = await crypto.subtle.encrypt(
-      { name: 'AES-GCM', iv },
-      key,
-      enc.encode(text)
-    )
+    const encrypted = await crypto.subtle.encrypt({ name: 'AES-GCM', iv }, key, enc.encode(text))
     const buffer = new Uint8Array([...iv, ...new Uint8Array(encrypted)])
     return btoa(String.fromCharCode(...buffer))
   }
@@ -22,11 +18,7 @@ export class CryptoStorage {
       const iv = buffer.slice(0, 12)
       const data = buffer.slice(12)
       const key = await this.importKey()
-      const decrypted = await crypto.subtle.decrypt(
-        { name: 'AES-GCM', iv },
-        key,
-        data
-      )
+      const decrypted = await crypto.subtle.decrypt({ name: 'AES-GCM', iv }, key, data)
       return new TextDecoder().decode(decrypted)
     } catch {
       return null
@@ -34,12 +26,9 @@ export class CryptoStorage {
   }
 
   private async importKey(): Promise<CryptoKey> {
-    return crypto.subtle.importKey(
-      'raw',
-      new TextEncoder().encode(this.key),
-      'AES-GCM',
-      false,
-      ['encrypt', 'decrypt']
-    )
+    return crypto.subtle.importKey('raw', new TextEncoder().encode(this.key), 'AES-GCM', false, [
+      'encrypt',
+      'decrypt',
+    ])
   }
 }

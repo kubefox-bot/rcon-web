@@ -12,7 +12,7 @@ export function useServerConnect() {
     const decrypted = await encryptedPasswordStorage.decrypt(password)
     return decrypted ? ok(decrypted) : err('Не удалось расшифровать пароль')
   }
-  
+
   const encryptPassword = async (password: string): Promise<Result<string, string>> => {
     const encrypted = await encryptedPasswordStorage.encrypt(password)
     return encrypted ? ok(encrypted) : err('Не удалось зашифровать пароль')
@@ -40,7 +40,7 @@ export function useServerConnect() {
 
   const connect = async (
     payload: ConnectPayload,
-    isEncrypted: boolean = false
+    isEncrypted: boolean = false,
   ): Promise<Result<'connected', string>> => {
     const passwordResult = isEncrypted
       ? await decryptPassword(payload.password)

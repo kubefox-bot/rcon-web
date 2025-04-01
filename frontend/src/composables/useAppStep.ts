@@ -1,4 +1,4 @@
-import { jwt } from '@/lib';
+import { jwt } from '@/lib'
 import { ref } from 'vue'
 
 export type AppStep = 'auth' | 'server' | 'rcon'
@@ -6,10 +6,8 @@ export type AppStep = 'auth' | 'server' | 'rcon'
 const step = ref<AppStep>('auth')
 
 export function useAppStep() {
-  const setStep = (newStep: AppStep) =>{
-
-
-    step.value = newStep;
+  const setStep = (newStep: AppStep) => {
+    step.value = newStep
   }
 
   const initStep = () => {
@@ -23,6 +21,6 @@ export function useAppStep() {
   return {
     step,
     setStep,
-    initStep
+    initStep,
   }
 }

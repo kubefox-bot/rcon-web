@@ -1,16 +1,17 @@
 import { defineConfig, loadEnv } from 'vite'
 import vue from '@vitejs/plugin-vue'
+import eslint from 'vite-plugin-eslint'
 import path from 'path'
-
+import UnoCSS from 'unocss/vite'
 export default defineConfig(({ mode }) => {
   const env = loadEnv(mode, process.cwd(), '')
 
   return {
-    plugins: [vue()],
+    plugins: [vue(), eslint(), UnoCSS()],
     server: {
       host: env.FRONT_HOST,
       port: Number(env.FRONT_PORT) || 5173,
-      strictPort: true
+      strictPort: true,
     },
     resolve: {
       alias: {
@@ -28,7 +29,7 @@ export default defineConfig(({ mode }) => {
       API_PORT: JSON.stringify(env.PORT),
       FRONT_PORT: JSON.stringify(env.FRONT_PORT),
       FRONT_HOST: JSON.stringify(env.FRONT_HOST),
-      ENCRYPTION_KEY: JSON.stringify(env.ENCRYPTION_KEY)
-    }
+      ENCRYPTION_KEY: JSON.stringify(env.ENCRYPTION_KEY),
+    },
   }
 })

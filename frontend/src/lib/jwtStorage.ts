@@ -44,5 +44,4 @@ export class JwtStorage {
   }
 }
 
-
-export const jwt = new JwtStorage();
+export const jwt = new JwtStorage()

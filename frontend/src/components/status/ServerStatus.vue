@@ -7,9 +7,7 @@
 </template>
 
 <script setup lang="ts">
-import { useServerError } from '@/composables/useServerError';
-
-
+import { useServerError } from '@/composables/useServerError'
 
 defineProps<{ status: string }>()
 

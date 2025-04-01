@@ -1,0 +1,10 @@
+// main.scss
+@use './variables.scss' as *;
+
+body {
+  background: $bg-dark;
+  color: $text-color;
+  font-family: 'Segoe UI', sans-serif;
+  margin: 0;
+  padding: 0;
+}

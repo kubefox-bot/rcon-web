@@ -3,7 +3,7 @@ import { ConnectPayload } from '@/models'
 import { Result } from 'neverthrow'
 
 export async function connectToServer(
-  payload: ConnectPayload
+  payload: ConnectPayload,
 ): Promise<Result<'connected', string>> {
   return sendRconRequest<'connected'>('connect', payload)
 }

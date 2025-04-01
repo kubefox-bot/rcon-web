@@ -34,8 +34,7 @@ export function useServerStatus() {
         },
         (err) => {
           output.value = `❌ ${err}`
-         
-        }
+        },
       )
 
     return result.map((r) => r.response)
