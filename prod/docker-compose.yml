@@ -1,0 +1,52 @@
+services:
+  cs2:
+    image: joedwards32/cs2
+    container_name: cs2
+    restart: unless-stopped
+    ports:
+      - "27015:27015/tcp"
+      - "27015:27015/udp"
+      - "27020:27020/udp"
+      - "27050:27050/tcp"
+    volumes:
+      - cs2-data:/home/steam/cs2-dedicated
+    env_file:
+      - ../.env
+
+  rcon-back:
+    image: ghcr.io/xymox72/rcon-backend:latest
+    container_name: rcon-back
+    expose:
+      - "3000"
+    env_file:
+      - ../.env
+    restart: unless-stopped
+
+  rcon-front:
+    image: ghcr.io/xymox72/rcon-frontend:latest
+    container_name: rcon-front
+    expose:
+      - "4173"
+    env_file:
+      - ../.env
+    restart: unless-stopped
+
+  nginx:
+    image: nginx:stable
+    container_name: rcon-nginx
+    ports:
+      - "3000:3000"
+    volumes:
+      - ./nginx/default.conf:/etc/nginx/conf.d/default.conf
+    depends_on:
+      - rcon-back
+      - rcon-front
+    restart: unless-stopped
+
+volumes:
+  cs2-data:
+    driver: local
+    driver_opts:
+      type: none
+      device: ../cs-data
+      o: bind

@@ -1,10 +1,10 @@
 import axios from 'axios'
-import { config } from '@/config'
+
 import { jwt } from './jwtStorage'
 import { forceLogout } from '@/composables/useAuth'
 
 export const api = axios.create({
-  baseURL: `${config.apiHost}:${config.apiPort}`,
+  baseURL: '/api',
 })
 
 api.interceptors.request.use((req) => {
