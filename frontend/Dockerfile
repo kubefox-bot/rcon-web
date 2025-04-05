@@ -1,31 +1,22 @@
-FROM node:22-alpine AS builder
-
-RUN corepack enable && corepack prepare yarn@4.8.1 --activate
+FROM marcaureln/volta:2.0.1-bookworm-slim AS builder
 
 WORKDIR /app
 
 COPY package.json yarn.lock .yarnrc.yml .yarn/ ./
-
 RUN yarn install --immutable
 
 COPY . .
-
 RUN yarn build
-
-
 
 FROM node:22-alpine AS runner
 
-RUN corepack enable && corepack prepare yarn@4.8.1 --activate
-
 WORKDIR /app
+
+# Устанавливаем только нужную CLI-зависимость
+RUN corepack enable && yarn dlx serve --version
+
 COPY --from=builder /app/dist ./dist
-COPY --from=builder /app/package.json /app/yarn.lock /app/.yarnrc.yml /app/.yarn/ ./
-
-RUN yarn workspaces focus --production
-
 
 EXPOSE 4173
 
-CMD ["yarn", "preview:prod"]
-
+CMD ["yarn", "dlx", "serve", "dist", "-l", "4173"]
