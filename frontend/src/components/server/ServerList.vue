@@ -29,7 +29,7 @@ const { connect } = useServerConnect()
 const { setStep } = useAppStep()
 
 const connectTo = async (server: StoredServer) => {
-  const result = await connect(server, true)
+  const result = await connect(server)
 
   result.match(
     () => setStep('rcon'),

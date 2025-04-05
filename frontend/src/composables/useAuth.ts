@@ -38,7 +38,7 @@ export function useAuth() {
     setStep('auth')
 
     if (forceMessage) {
-      flash.show('⚠️ Сессия истекла. Войдите снова.')
+      flash.show('Сессия истекла. Войдите снова.')
     }
   }
 

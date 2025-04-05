@@ -8,13 +8,8 @@ import { Result, ok, err } from 'neverthrow'
 export function useServerConnect() {
   const { setError } = useServerError()
 
-  const decryptPassword = async (password: string): Promise<Result<string, string>> => {
-    const decrypted = await encryptedPasswordStorage.decrypt(password)
-    return decrypted ? ok(decrypted) : err('Не удалось расшифровать пароль')
-  }
-
-  const encryptPassword = async (password: string): Promise<Result<string, string>> => {
-    const encrypted = await encryptedPasswordStorage.encrypt(password)
+  const encryptPassword = async (plain: string): Promise<Result<string, string>> => {
+    const encrypted = await encryptedPasswordStorage.encrypt(plain)
     return encrypted ? ok(encrypted) : err('Не удалось зашифровать пароль')
   }
 
@@ -28,7 +23,7 @@ export function useServerConnect() {
     })
   }
 
-  const saveIfNew = (payload: ConnectPayload) => {
+  const saveEncrypted = async (payload: ConnectPayload) => {
     const exists = serverStorage
       .loadAll()
       .some((s) => s.host === payload.host && s.port === payload.port)
@@ -38,30 +33,20 @@ export function useServerConnect() {
     }
   }
 
-  const connect = async (
-    payload: ConnectPayload,
-    isEncrypted: boolean = false,
-  ): Promise<Result<'connected', string>> => {
-    const passwordResult = isEncrypted
-      ? await decryptPassword(payload.password)
-      : ok(payload.password)
+  const connect = async (payload: ConnectPayload): Promise<Result<'connected', string>> => {
+    const encryptedResult = await encryptPassword(payload.password)
 
-    if (passwordResult.isErr()) {
-      setError(passwordResult.error)
-      return err(passwordResult.error)
+    if (encryptedResult.isErr()) {
+      setError(encryptedResult.error)
+      return err(encryptedResult.error)
     }
 
-    const decrypted = passwordResult.value
+    const encrypted = encryptedResult.value
 
-    const result = await tryConnect({ ...payload, password: decrypted })
+    const result = await tryConnect({ ...payload, password: encrypted })
 
-    if (result.isOk() && !isEncrypted) {
-      const encryptedResult = await encryptPassword(payload.password)
-      if (encryptedResult.isOk()) {
-        saveIfNew({ ...payload, password: encryptedResult.value })
-      } else {
-        console.warn('⚠️ Пароль не был сохранён: ошибка шифрования')
-      }
+    if (result.isOk()) {
+      await saveEncrypted({ ...payload, password: encrypted })
     }
 
     return result

@@ -84,6 +84,9 @@ const handleSend = async (cmd: string) => {
   gap: 2rem;
   align-items: stretch;
   align-items: flex-start;
+  @media (max-width: 1024px) {
+    flex-direction: column;
+  }
 
   .panels {
     flex: 1;

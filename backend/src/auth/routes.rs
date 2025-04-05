@@ -14,7 +14,6 @@ pub async fn login(
     State(state): State<AppState>,
     Json(payload): Json<AuthRequest>,
 ) -> Result<Json<AuthResponse>, AuthError> {
-
     println!("🔥 login request received: {:?}", payload.password);
 
     if payload.password != state.jwt.secret() {

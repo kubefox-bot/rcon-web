@@ -9,6 +9,8 @@ pub async fn handle_connect(
     state: AppState,
 ) -> Response {
     let addr = format!("{host}:{port}");
+    let password = state.crypto.decrypt_if_needed(&password);
+
     match rcon::Connection::connect(&addr, &password).await {
         Ok(conn) => {
             let mut lock = state.client.lock().await;
