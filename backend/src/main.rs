@@ -1,8 +1,10 @@
 mod app;
 mod auth;
 mod config;
+mod crypto;
 mod handlers;
 mod models;
+mod observability;
 mod state;
 
 use app::router::build_router;
@@ -10,21 +12,26 @@ use app::router::build_router;
 use auth::jwt::JwtManager;
 use chrono::Utc;
 use config::Config;
+use crypto::Crypto;
 use state::AppState;
 use std::sync::Arc;
 use tokio::{net::TcpListener, sync::Mutex};
 
 #[tokio::main]
 async fn main() {
+    observability::Observability::init();
     let config = Config::from_env();
     let addr = config.socket_addr();
 
     let jwt = JwtManager::new(config.auth_token.clone());
 
+    let crypto = Crypto::new(&config.encryption_key);
+
     let state = AppState {
         client: Arc::new(Mutex::new(None)),
         jwt: Arc::new(jwt),
         last_issued: Arc::new(Mutex::new(Some(Utc::now().timestamp()))),
+        crypto: Arc::new(crypto),
     };
 
     let app = build_router(state);

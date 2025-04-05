@@ -13,3 +13,9 @@ dotenvy = "0.15.7"
 tower-http = {version = "0.6.2", features = ["trace"]}
 jsonwebtoken = "9.3.1"
 chrono = "0.4.40"
+tracing-subscriber = { version = "0.3", features = ["fmt", "env-filter"] }
+tracing = "0.1.41"
+tower-layer = "0.3.3"
+rand = "0.9.0"
+aes-gcm = { version = "0.10", features = ["aes"] }
+base64 = "0.22.1"

@@ -2,10 +2,11 @@ import { useGlobalLoader } from '@/composables/useGlobalLoader'
 import { api } from '../lib/api'
 import { Result, ok, err } from 'neverthrow'
 import type { AxiosError } from 'axios'
+import { ConnectPayload } from '@/models'
 
 export async function sendRconRequest<T>(
   action: string,
-  payload: Record<string, unknown> = {},
+  payload: ConnectPayload
 ): Promise<Result<T, string>> {
   const { start, stop } = useGlobalLoader()
   start()
