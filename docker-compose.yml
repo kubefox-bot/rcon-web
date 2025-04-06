@@ -1,0 +1,14 @@
+services:
+  rcon-dev:
+    build:
+      context: .
+      dockerfile: Dockerfile      
+    container_name: rcon-dev
+
+    ports:
+      - "80:80"                   
+
+    env_file:
+      - .env                         
+    volumes:
+      - .env:/app/.env:ro              

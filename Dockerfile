@@ -29,16 +29,16 @@ FROM nginx:1.27-alpine
 
 RUN apk add --no-cache libssl3 gettext
 
-# 📦 backend
+
 COPY --from=backend-builder /backend/target/x86_64-unknown-linux-musl/release/rcon-api /usr/local/bin/rcon-api
 
-# 🌐 frontend
+
 COPY --from=frontend-builder /frontend/dist /var/www/html
 
-# 📄 nginx шаблон
-COPY nginx/nginx.conf.template /etc/nginx/nginx.conf.template
+COPY nginx/nginx.http.conf /etc/nginx/nginx.http.conf
+COPY nginx/nginx.https.conf /etc/nginx/nginx.https.conf
 
-# 🛠 стартовый скрипт
+
 COPY start.sh /start.sh
 RUN chmod +x /start.sh
 
