@@ -1,6 +1,12 @@
 # === Stage: Frontend ===
 FROM marcaureln/volta:2.0.2-bookworm-slim AS frontend-builder
 
+ARG ENCRYPTION_KEY
+
+
+ENV ENCRYPTION_KEY=${ENCRYPTION_KEY}
+
+
 WORKDIR /frontend
 COPY frontend/package.json frontend/yarn.lock frontend/.yarnrc.yml frontend/.yarn/ ./
 RUN yarn install --immutable
