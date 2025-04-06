@@ -44,7 +44,8 @@ impl Observability {
 
         let user_id = req
             .extensions()
-            .get::<String>().cloned()
+            .get::<String>()
+            .cloned()
             .unwrap_or_else(|| "unauthenticated".into());
 
         tracing::info_span!(
