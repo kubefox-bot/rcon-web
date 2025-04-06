@@ -1,6 +1,6 @@
 services:
   nginx:
-    image: nginx:stable
+    image: nginx:1.27-alpine
     container_name: rcon-nginx
     ports:
       - "80:80"
@@ -14,7 +14,7 @@ services:
     build:
       context: ./backend
       dockerfile: Dockerfile
-    container_name: rcon-backend
+    container_name: rcon-backendtable
     ports:
       - "3000:3000" 
     env_file:

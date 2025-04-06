@@ -21,18 +21,33 @@ services:
 
   # 🌐 Nginx — проксирует трафик к фронту и API
   nginx:
-    image: nginx:stable
+    image: nginx:1.27-alpine
     container_name: rcon-nginx
     ports:
       - "80:80"      # HTTP fallback
       - "3000:3000"   # 🔓 HTTP — для локального доступа (можно отключить)
       - "8443:8443"   # 🔒 HTTPS — основной доступ для пользователей
     volumes:
-      - ./nginx/default.conf:/etc/nginx/conf.d/default.conf   # 📄 основной конфиг nginx
-      - ./certs/cert.pem:/etc/nginx/certs/cert.pem:ro   # 🔐 TLS-сертификат (публичный)
-      - ./certs/key.pem:/etc/nginx/certs/key.pem:ro     # 🔐 Приватный ключ к сертификату
-      - ./certs/cloudflare-origin-ca-root.pem:/etc/nginx/certs/cloudflare-origin-ca-root.pem:ro  # ✅ (опционально, если используете Cloudflare Origin CA)
+      - ./nginx/nginx.conf:/etc/nginx/nginx.conf:ro,z
+      - ./certs:/etc/nginx/certs:ro,z
     depends_on:
       - rcon-back
       - rcon-front
     restart: unless-stopped
+  cs2:
+    image: joedwards32/cs2                              # 📦 готовый образ CS2
+    container_name: cs2                                 # 👈 имя контейнера
+    restart: unless-stopped                             # 🔁 перезапуск при падении
+    ports:
+      - "27015:27015/tcp"                               # 📡 основной порт
+      - "27015:27015/udp"
+      - "27020:27020/udp"                               # 📺 GOTV
+      - "27050:27050/tcp"                               # 🔐 RCON
+    volumes:
+      - cs2-data:/home/steam/cs2-dedicated              # 💾 сохраняем все данные сервера на диск
+    env_file:
+      - .env  
+
+volumes:
+  cs2-data:  # 💾 Храним файлы CS2 (карты, конфиги, логи и т.п.)
+    driver: local
