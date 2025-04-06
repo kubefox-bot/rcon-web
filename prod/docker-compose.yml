@@ -1,53 +1,18 @@
 services:
-  # 🧠 Бэкенд — обрабатывает RCON-команды и общается с CS2-сервером
-  rcon-back:
-    image: ghcr.io/xymox72/rcon-backend:latest     # 📦 готовый образ бэкенда
-    container_name: rcon-back                      # имя контейнера (можно не менять)
-    expose:
-      - "3000"                                      # внутренний порт (проксируется через nginx)
-    env_file:
-      - .env                                        # 🔐 переменные из .env (например, ENCRYPTION_KEY)
-    restart: unless-stopped                         # перезапуск, если контейнер упал
+  rcon:
+    image: ghcr.io/xymox72/rcon-full:latest       # ✅ готовый образ
+    container_name: rcon
 
-  # 🎨 Фронтенд — интерфейс для управления RCON
-  rcon-front:
-    image: ghcr.io/xymox72/rcon-frontend:latest    # 📦 готовый образ фронта
-    container_name: rcon-front
-    expose:
-      - "4173"                                      # порт, на котором работает фронт внутри сети
+    ports:
+      - "80:80"       # HTTP fallback
+      - "8443:8443"   # HTTPS основной
+
     env_file:
       - .env
-    restart: unless-stopped
 
-  # 🌐 Nginx — проксирует трафик к фронту и API
-  nginx:
-    image: nginx:1.27-alpine
-    container_name: rcon-nginx
-    ports:
-      - "80:80"      # HTTP fallback
-      - "3000:3000"   # 🔓 HTTP — для локального доступа (можно отключить)
-      - "8443:8443"   # 🔒 HTTPS — основной доступ для пользователей
-    volumes:
-      - ./nginx/nginx.conf:/etc/nginx/nginx.conf:ro,z
-      - ./certs:/etc/nginx/certs:ro,z
-    depends_on:
-      - rcon-back
-      - rcon-front
-    restart: unless-stopped
-  cs2:
-    image: joedwards32/cs2                              # 📦 готовый образ CS2
-    container_name: cs2                                 # 👈 имя контейнера
-    restart: unless-stopped                             # 🔁 перезапуск при падении
-    ports:
-      - "27015:27015/tcp"                               # 📡 основной порт
-      - "27015:27015/udp"
-      - "27020:27020/udp"                               # 📺 GOTV
-      - "27050:27050/tcp"                               # 🔐 RCON
-    volumes:
-      - cs2-data:/home/steam/cs2-dedicated              # 💾 сохраняем все данные сервера на диск
-    env_file:
-      - .env  
+    environment:
+      - RCON_DOMAIN=${RCON_DOMAIN}  # используется в шаблоне nginx
 
-volumes:
-  cs2-data:  # 💾 Храним файлы CS2 (карты, конфиги, логи и т.п.)
-    driver: local
+    volumes:
+      - ./certs:/etc/nginx/certs:ro,z   # 🔐 TLS-сертификаты
+      - .env:/app/.env:ro,z               # 🔑 для backend (если нужно)

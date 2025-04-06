@@ -1,0 +1,18 @@
+services:
+  rcon-dev:
+    build:
+      context: .
+      dockerfile: Dockerfile      # 👈 билдим через dev-докерфайл
+    container_name: rcon-dev
+
+    ports:
+      - "80:80"                        # 🌐 фронт + API доступны на http://localhost
+
+    env_file:
+      - .env                           # 🔐 переменные окружения
+
+    environment:
+      - RCON_DOMAIN=localhost          # 🧩 используется в шаблоне nginx.conf.template
+
+    volumes:
+      - .env:/app/.env:ro              # 📦 монтируем .env внутрь
