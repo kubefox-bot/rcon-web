@@ -29,16 +29,13 @@ jobs:
         working-directory: backend
         run: cargo fmt -- --check
 
-      - name: 🔧 Set up Node.js
-        uses: actions/setup-node@v4
-        with:
-          node-version: 20
-
-      - name: 📦 Install JS deps
+      - name: Install Volta
+        uses: volta-cli/action@v4
+      
+      - name: Install deps (via Volta)
         working-directory: frontend
-        run: |
-          corepack enable
-          yarn install --immutable
+        run: yarn install --immutable
+      
 
       - name: 🧼 Run eslint
         working-directory: frontend
