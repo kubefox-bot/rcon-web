@@ -18,8 +18,7 @@ impl Crypto {
     pub fn decrypt_if_needed(&self, input: &str) -> String {
         const PREFIX: &str = "enc:";
 
-        if input.starts_with(PREFIX) {
-            let without_prefix = &input[PREFIX.len()..];
+        if let Some(without_prefix) = input.strip_prefix(PREFIX) {
             match self.decrypt(without_prefix) {
                 Some(decrypted) => decrypted,
                 None => {
