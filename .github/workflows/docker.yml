@@ -39,5 +39,7 @@ jobs:
           tags: |
             ${{ env.IMAGE_NAME }}:latest
             ${{ startsWith(github.ref, 'refs/tags/v') && format('{0}:{1}', env.IMAGE_NAME, github.ref_name) || '' }}
+          build-args: |
+            ENCRYPTION_KEY=${{ secrets.ENCRYPTION_KEY }}
           cache-from: type=gha
           cache-to: type=gha,mode=max
