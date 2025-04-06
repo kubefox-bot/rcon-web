@@ -19,3 +19,15 @@ tower-layer = "0.3.3"
 rand = "0.9.0"
 aes-gcm = { version = "0.10", features = ["aes"] }
 base64 = "0.22.1"
+
+[[bin]]
+name = "rcon-api"
+path = "src/main.rs"
+
+
+[profile.release]
+strip = true      # Удаляет debug-символы
+lto = true        # Link Time Optimization (ускоряет запуск)
+codegen-units = 1 # Максимально агрессивная оптимизация
+opt-level = "z"   # "z" для минимального размера, "s" — чуть больше, но быстрее
+panic = "abort"

@@ -1,0 +1,48 @@
+name: Lint Code
+
+on:
+  pull_request:
+
+jobs:
+  rust-lint:
+    runs-on: ubuntu-latest
+    name: 🦀 Rust Lint
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Set up Rust
+        uses: dtolnay/rust-toolchain@stable
+
+      - name: Add Rust linters
+        run: rustup component add clippy rustfmt
+
+      - name: Run clippy
+        working-directory: backend
+        run: cargo clippy --all-targets --all-features -- -D warnings
+
+      - name: Check rustfmt
+        working-directory: backend
+        run: cargo fmt -- --check
+
+  js-lint:
+    runs-on: ubuntu-latest
+    name: 🟨 JS Lint
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Install Volta
+        uses: volta-cli/action@v4
+      
+      - name: Install deps (via Volta)
+        working-directory: frontend
+        run: yarn install --immutable
+
+      - name: Run eslint
+        working-directory: frontend
+        run: yarn lint
+
+        
