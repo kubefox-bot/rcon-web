@@ -19,16 +19,10 @@ use tokio::{net::TcpListener, sync::Mutex};
 
 #[tokio::main]
 async fn main() {
-    println!("🟡 rcon-api starting...");
-    dotenvy::dotenv().expect("❌ .env not found");
-    println!("✅ .env loaded");
     observability::Observability::init();
     let config = Config::from_env();
-    println!("✅ Config loaded: {:?}", config);
     let addr = config.socket_addr();
-    println!("🔌 Will bind to {}", addr);
     let jwt = JwtManager::new(config.auth_token.clone());
-
     let crypto = Crypto::new(&config.encryption_key);
 
     let state = AppState {

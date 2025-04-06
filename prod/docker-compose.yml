@@ -1,18 +1,18 @@
 services:
   rcon:
-    image: ghcr.io/xymox72/rcon-full:latest       # ✅ готовый образ
+    image: ghcr.io/xymox72/rcon:latest
     container_name: rcon
 
     ports:
-      - "80:80"       # HTTP fallback
-      - "8443:8443"   # HTTPS основной
+      - "80:80"
+      - "8443:8443"
 
     env_file:
       - .env
 
     environment:
-      - RCON_DOMAIN=${RCON_DOMAIN}  # используется в шаблоне nginx
+      - RCON_DOMAIN=yourdomain.com
 
     volumes:
-      - ./certs:/etc/nginx/certs:ro,z   # 🔐 TLS-сертификаты
-      - .env:/app/.env:ro,z               # 🔑 для backend (если нужно)
+      - .env:/app/.env:ro
+      - ./certs:/etc/nginx/certs:ro
