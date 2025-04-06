@@ -16,3 +16,26 @@ services:
     volumes:
       - .env:/app/.env:ro
       - ./certs:/etc/nginx/certs:ro
+
+    depends_on:
+      - cs2
+
+  cs2:
+    image: joedwards32/cs2                              # 📦 готовый образ CS2
+    container_name: cs2                                 # 👈 имя контейнера
+    restart: unless-stopped                             # 🔁 перезапуск при падении
+    ports:
+      - "27015:27015/tcp"                               # 📡 основной порт
+      - "27015:27015/udp"
+      - "27020:27020/udp"                               # 📺 GOTV
+      - "27050:27050/tcp"                               # 🔐 RCON
+    volumes:
+      - cs2-data:/home/steam/cs2-dedicated              # 💾 сохраняем все данные сервера на диск
+    env_file:
+      - .env  
+
+
+  
+volumes:
+  cs2-data:  # 💾 Храним файлы CS2 (карты, конфиги, логи и т.п.)
+    driver: local
