@@ -1,0 +1,45 @@
+name: Lint Code
+
+on:
+  push:
+    branches: ["**"]
+  pull_request:
+
+jobs:
+  lint:
+    runs-on: ubuntu-latest
+    name: Lint Rust & JS
+
+    steps:
+      - name: 🧾 Checkout
+        uses: actions/checkout@v4
+
+      - name: 🦀 Set up Rust
+        uses: dtolnay/rust-toolchain@stable
+      
+      - name: 📦 Add Rust linters
+        run: rustup component add clippy rustfmt
+      
+
+      - name: ✨ Run clippy
+        working-directory: backend
+        run: cargo clippy --all-targets --all-features -- -D warnings
+
+      - name: 🧹 Check rustfmt
+        working-directory: backend
+        run: cargo fmt -- --check
+
+      - name: 🔧 Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+
+      - name: 📦 Install JS deps
+        working-directory: frontend
+        run: |
+          corepack enable
+          yarn install --immutable
+
+      - name: 🧼 Run eslint
+        working-directory: frontend
+        run: yarn lint

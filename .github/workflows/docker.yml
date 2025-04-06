@@ -6,7 +6,7 @@ on:
     tags: ["v*"]
 
 jobs:
-  build:
+  docker:
     runs-on: ubuntu-latest
 
     permissions:
@@ -30,7 +30,7 @@ jobs:
           username: ${{ github.actor }}
           password: ${{ secrets.GITHUB_TOKEN }}
 
-      - name: Build and Push
+      - name: Build & Push image
         uses: docker/build-push-action@v5
         with:
           context: .
@@ -38,6 +38,6 @@ jobs:
           push: true
           tags: |
             ${{ env.IMAGE_NAME }}:latest
-            ${{ github.ref_type == 'tag' && format('{0}:{1}', env.IMAGE_NAME, github.ref_name) || '' }}
+            ${{ startsWith(github.ref, 'refs/tags/v') && format('{0}:{1}', env.IMAGE_NAME, github.ref_name) || '' }}
           cache-from: type=gha
           cache-to: type=gha,mode=max

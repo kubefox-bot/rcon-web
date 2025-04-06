@@ -25,4 +25,3 @@ pub fn build_router(state: AppState) -> Router {
 
     Observability::apply(common_router)
 }
-

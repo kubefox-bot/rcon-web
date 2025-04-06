@@ -6,7 +6,7 @@ import { ConnectPayload } from '@/models'
 
 export async function sendRconRequest<T>(
   action: string,
-  payload: ConnectPayload
+  payload: ConnectPayload,
 ): Promise<Result<T, string>> {
   const { start, stop } = useGlobalLoader()
   start()
