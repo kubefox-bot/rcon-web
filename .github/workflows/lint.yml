@@ -1,8 +1,6 @@
 name: Lint Code
 
 on:
-  push:
-    branches: ["**"]
   pull_request:
 
 jobs:
@@ -42,7 +40,7 @@ jobs:
       - name: Install deps (via Volta)
         working-directory: frontend
         run: yarn install --immutable
-        
+
       - name: Run eslint
         working-directory: frontend
         run: yarn lint
