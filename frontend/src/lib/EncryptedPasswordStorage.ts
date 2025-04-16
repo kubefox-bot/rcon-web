@@ -1,29 +1,19 @@
-import { CryptoStorage } from './cryptoStorage'
 import { config } from '@/config'
+import { ICryptoStorage } from './type'
+import { CryptoStorageChaCha } from './cryptoStorageChacha'
 
 export class EncryptedPasswordStorage {
-  private crypto: CryptoStorage | null = null
+  private crypto: ICryptoStorage
 
   constructor() {
-    if (typeof crypto !== 'undefined' && crypto.subtle) {
-      this.crypto = new CryptoStorage(config.masterKey)
-    } else {
-      console.warn('⚠️ Web Crypto API не поддерживается. Шифрование отключено.')
-    }
-  }
-
-  isProbablyEncrypted(value: string): boolean {
-    return value.startsWith('enc:')
+    const key = config.masterKey
+    const keyBytes = new TextEncoder().encode(key)
+    this.crypto = new CryptoStorageChaCha(keyBytes)
   }
 
   async encrypt(password: string): Promise<string | null> {
-    if (this.isProbablyEncrypted(password) || !this.crypto) {
-      return password
-    }
-
     try {
-      const encrypted = await this.crypto.encrypt(password)
-      return encrypted ? `enc:${encrypted}` : null
+      return await this.crypto.encrypt(password)
     } catch (e: unknown) {
       console.warn('⚠️ Ошибка при шифровании:', e)
       return null
@@ -31,10 +21,6 @@ export class EncryptedPasswordStorage {
   }
 
   async decrypt(encrypted: string): Promise<string | null> {
-    if (!this.isProbablyEncrypted(encrypted)) {
-      return encrypted
-    }
-
     if (!this.crypto) {
       return encrypted
     }

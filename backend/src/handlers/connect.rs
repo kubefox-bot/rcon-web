@@ -9,7 +9,15 @@ pub async fn handle_connect(
     state: AppState,
 ) -> Response {
     let addr = format!("{host}:{port}");
-    let password = state.crypto.decrypt_if_needed(&password);
+    let password = match state.crypto.decrypt(&password) {
+        Some(p) => p,
+        None => {
+            return ApiResponse::<()>::error(
+                "Invalid or undecodable password",
+                StatusCode::BAD_REQUEST,
+            );
+        }
+    };
 
     match rcon::Connection::connect(&addr, &password).await {
         Ok(conn) => {

@@ -6,6 +6,7 @@ pub struct Config {
     pub auth_token: String,
     pub port: u16,
     pub encryption_key: String,
+    pub encryption_backend: String,
 }
 
 impl Config {
@@ -16,6 +17,7 @@ impl Config {
             auth_token: get_env("AUTH_TOKEN", "changeme"),
             port: get_env_parse("PORT", 3000),
             encryption_key: get_env("ENCRYPTION_KEY", "12345678901234567890123456789012"),
+            encryption_backend: get_env("ENCRYPTION_METHOD", "chacha"),
         }
     }
 
