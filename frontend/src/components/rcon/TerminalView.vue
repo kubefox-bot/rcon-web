@@ -8,7 +8,7 @@
 </template>
 
 <script setup lang="ts">
-defineProps<{ output: string }>();
+defineProps<{ output: string }>()
 </script>
 
 <style scoped lang="scss">

@@ -6,9 +6,9 @@
 </template>
 
 <script setup lang="ts">
-import GlobalLoader from "../shared/GlobalLoader.vue";
+import GlobalLoader from "../shared/GlobalLoader.vue"
 
-defineProps<{ status: string }>();
+defineProps<{ status: string }>()
 </script>
 
 <style scoped lang="scss">

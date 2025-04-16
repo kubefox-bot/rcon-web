@@ -14,13 +14,13 @@
 </template>
 
 <script setup lang="ts">
-import { usePersistentPanelState } from "./panels/usePersistentPanelState";
+import { usePersistentPanelState } from "./panels/usePersistentPanelState"
 
-const props = defineProps<{ title: string }>();
+const props = defineProps<{ title: string }>()
 
-const panelId = `panel-${props.title.toLowerCase().replace(/\s+/g, "-")}`;
+const panelId = `panel-${props.title.toLowerCase().replace(/\s+/g, "-")}`
 
-const { isOpen, toggle } = usePersistentPanelState(panelId, true);
+const { isOpen, toggle } = usePersistentPanelState(panelId, true)
 </script>
 
 <style scoped lang="scss">

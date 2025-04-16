@@ -11,8 +11,8 @@
 </template>
 
 <script setup lang="ts">
-import type { RconSendEvent } from "../type";
-const emit = defineEmits<RconSendEvent>();
+import type { RconSendEvent } from "../type"
+const emit = defineEmits<RconSendEvent>()
 
 const maps = [
 	"de_dust2",
@@ -22,7 +22,7 @@ const maps = [
 	"de_overpass",
 	"de_vertigo",
 	"cs_office",
-];
+]
 </script>
 
 <style scoped lang="scss">

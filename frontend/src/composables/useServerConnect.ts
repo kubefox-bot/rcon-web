@@ -1,64 +1,64 @@
-import { connectToServer } from "@/handlers";
-import { encryptedPasswordStorage } from "@/lib/EncryptedPasswordStorage";
-import { serverStorage } from "@/lib/serverStorage";
-import type { ConnectPayload } from "@/models";
-import { type Result, err, ok } from "neverthrow";
-import { useServerError } from "./useServerError";
+import { connectToServer } from "@/handlers"
+import { encryptedPasswordStorage } from "@/lib/EncryptedPasswordStorage"
+import { serverStorage } from "@/lib/serverStorage"
+import type { ConnectPayload } from "@/models"
+import { type Result, err, ok } from "neverthrow"
+import { useServerError } from "./useServerError"
 
 export function useServerConnect() {
-	const { setError } = useServerError();
+	const { setError } = useServerError()
 
 	const encryptPassword = async (
 		plain: string,
 	): Promise<Result<string, string>> => {
-		const encrypted = await encryptedPasswordStorage.encrypt(plain);
-		return encrypted ? ok(encrypted) : err("Не удалось зашифровать пароль");
-	};
+		const encrypted = await encryptedPasswordStorage.encrypt(plain)
+		return encrypted ? ok(encrypted) : err("Не удалось зашифровать пароль")
+	}
 
 	const tryConnect = async (
 		payload: ConnectPayload,
 	): Promise<Result<"connected", string>> => {
 		return connectToServer(payload).then((res) => {
 			if (res.isErr()) {
-				setError(res.error);
-				return err(res.error);
+				setError(res.error)
+				return err(res.error)
 			}
-			return ok("connected");
-		});
-	};
+			return ok("connected")
+		})
+	}
 
 	const saveEncrypted = async (payload: ConnectPayload) => {
 		const exists = serverStorage
 			.loadAll()
-			.some((s) => s.host === payload.host && s.port === payload.port);
+			.some((s) => s.host === payload.host && s.port === payload.port)
 
 		if (!exists) {
-			serverStorage.save(payload);
+			serverStorage.save(payload)
 		}
-	};
+	}
 
 	const connect = async (
 		payload: ConnectPayload,
 	): Promise<Result<"connected", string>> => {
-		const encryptedResult = await encryptPassword(payload.password);
+		const encryptedResult = await encryptPassword(payload.password)
 
 		if (encryptedResult.isErr()) {
-			setError(encryptedResult.error);
-			return err(encryptedResult.error);
+			setError(encryptedResult.error)
+			return err(encryptedResult.error)
 		}
 
-		const encrypted = encryptedResult.value;
+		const encrypted = encryptedResult.value
 
-		const result = await tryConnect({ ...payload, password: encrypted });
+		const result = await tryConnect({ ...payload, password: encrypted })
 
 		if (result.isOk()) {
-			await saveEncrypted({ ...payload, password: encrypted });
+			await saveEncrypted({ ...payload, password: encrypted })
 		}
 
-		return result;
-	};
+		return result
+	}
 
 	return {
 		connect,
-	};
+	}
 }

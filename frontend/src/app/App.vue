@@ -8,34 +8,34 @@
 </template>
 
 <script setup lang="ts">
-import LoginForm from "@/components/auth/LoginForm.vue";
-import RconPanel from "@/components/rcon/RconPanel.vue";
-import ServerView from "@/components/server/ServerView.vue";
-import FlashMessage from "@/components/shared/FlasMessage.vue";
-import ServerStatus from "@/components/status/ServerStatus.vue";
-import { useAppStep } from "@/composables/useAppStep";
-import { useServerStatus } from "@/composables/useServerStatus";
-import { computed, onMounted } from "vue";
-const { step, initStep } = useAppStep();
+import LoginForm from "@/components/auth/LoginForm.vue"
+import RconPanel from "@/components/rcon/RconPanel.vue"
+import ServerView from "@/components/server/ServerView.vue"
+import FlashMessage from "@/components/shared/FlasMessage.vue"
+import ServerStatus from "@/components/status/ServerStatus.vue"
+import { useAppStep } from "@/composables/useAppStep"
+import { useServerStatus } from "@/composables/useServerStatus"
+import { computed, onMounted } from "vue"
+const { step, initStep } = useAppStep()
 
 onMounted(() => {
-	initStep();
-});
+	initStep()
+})
 
-const { statusText } = useServerStatus();
+const { statusText } = useServerStatus()
 
 const currentComponent = computed(() => {
 	switch (step.value) {
 		case "auth":
-			return LoginForm;
+			return LoginForm
 		case "server":
-			return ServerView;
+			return ServerView
 		case "rcon":
-			return RconPanel;
+			return RconPanel
 		default:
-			return LoginForm;
+			return LoginForm
 	}
-});
+})
 </script>
 
 <style scoped lang="scss">

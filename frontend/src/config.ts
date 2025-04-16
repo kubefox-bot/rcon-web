@@ -5,4 +5,4 @@ export const config = {
 	frontPort: FRONT_PORT,
 	masterKey: ENCRYPTION_KEY,
 	encryptionBackend: ENCRYPTION_METHOD,
-};
+}
