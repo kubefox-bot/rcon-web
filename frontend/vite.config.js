@@ -19,7 +19,6 @@ export default defineConfig(({ mode }) => {
       host: true,
       allowedHosts: true
     },
-
     server: {
       host: '0.0.0.0',
       port: Number(env.FRONT_PORT) || 5173,
@@ -43,7 +42,6 @@ export default defineConfig(({ mode }) => {
     define: {
       AUTH_TOKEN: JSON.stringify(env.AUTH_TOKEN),
       ENCRYPTION_KEY: JSON.stringify(env.ENCRYPTION_KEY),
-      ENCRYPTION_METHOD:JSON.stringify(env.ENCRYPTION_METHOD ?? 'chacha'),
       API_HOST: JSON.stringify(env.API_HOST),
       API_PORT: JSON.stringify(env.PORT),
       FRONT_PORT: JSON.stringify(env.FRONT_PORT),
