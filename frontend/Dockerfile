@@ -1,22 +1,16 @@
-FROM marcaureln/volta:2.0.1-bookworm-slim AS builder
+FROM marcaureln/volta:2.0.2-bookworm-slim AS builder
 
 WORKDIR /app
 
-COPY package.json yarn.lock .yarnrc.yml .yarn/ ./
-RUN yarn install --immutable
+# Копируем lock-файлы и Yarn config
+COPY package.json frontend/yarn.lock frontend/.yarnrc.yml ./
+COPY .yarn/ ./.yarn/
 
-COPY . .
+# Обязательно устанавливаем зависимости!
+RUN corepack enable && yarn install --immutable
+
+# Затем копируем всё остальное (включая src, tsconfig и т.п.)
+COPY frontend/ ./
+
+# Теперь можно билдить
 RUN yarn build
-
-FROM node:22-alpine AS runner
-
-WORKDIR /app
-
-# Устанавливаем только нужную CLI-зависимость
-RUN corepack enable && yarn dlx serve --version
-
-COPY --from=builder /app/dist ./dist
-
-EXPOSE 4173
-
-CMD ["yarn", "dlx", "serve", "dist", "-l", "4173"]

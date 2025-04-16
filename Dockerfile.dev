@@ -1,11 +1,18 @@
-# === Stage: Frontend ===
 FROM marcaureln/volta:2.0.2-bookworm-slim AS frontend-builder
 
 WORKDIR /frontend
-COPY frontend/package.json frontend/yarn.lock frontend/.yarnrc.yml frontend/.yarn/ ./
+
+# Копируем все исходники (без мусора — фильтруем .dockerignore)
+COPY frontend/ ./
+
+# Копируем отдельно Yarn-кеш (чтобы не перетерлось)
+COPY frontend/package.json frontend/yarn.lock frontend/.yarnrc.yml ./
+COPY frontend/.yarn/ ./.yarn/
+
+# Ставим зависимости (всё уже есть на месте)
 RUN yarn install --immutable
 
-COPY frontend/ ./
+# Сборка
 RUN yarn build
 
 
