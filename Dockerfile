@@ -8,10 +8,15 @@ ENV ENCRYPTION_KEY=${ENCRYPTION_KEY}
 
 
 WORKDIR /frontend
-COPY frontend/package.json frontend/yarn.lock frontend/.yarnrc.yml frontend/.yarn/ ./
+
+COPY frontend/package.json frontend/yarn.lock frontend/.yarnrc.yml ./
+COPY frontend/.yarn/ ./.yarn/
+
 RUN yarn install --immutable
 
 COPY frontend/ ./
+COPY frontend/.pnp.cjs ./
+
 RUN yarn build
 
 
