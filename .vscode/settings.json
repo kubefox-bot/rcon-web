@@ -1,23 +1,26 @@
 {
 	"editor.formatOnSave": true,
-  
-
 	"[javascript]": {
-	  "editor.defaultFormatter": "biomejs.biome"
+		"editor.defaultFormatter": "biomejs.biome"
 	},
 	"[typescript]": {
-	  "editor.defaultFormatter": "biomejs.biome"
+		"editor.defaultFormatter": "biomejs.biome"
 	},
 	"[json]": {
-	  "editor.defaultFormatter": "biomejs.biome"
+		"editor.defaultFormatter": "biomejs.biome"
 	},
 	"[vue]": {
-	  "editor.defaultFormatter": "biomejs.biome"
+		"editor.defaultFormatter": "biomejs.biome"
 	},
-  
 	"editor.codeActionsOnSave": {
-	  "source.fixAll.biome": "explicit",
-	  "source.organizeImports.biome": "explicit"
-	}
-  }
-  
+		"source.fixAll.biome": "explicit",
+		"source.organizeImports.biome": "explicit"
+	},
+	// Yarn PnP SDK
+	"typescript.tsdk": ".yarn/sdks/typescript/lib",
+	"eslint.nodePath": ".yarn/sdks",
+	// Volar support (Vue 3)
+	"volar.tsPlugin": true,
+	// Иногда помогает, если всё равно не работает
+	"typescript.enablePromptUseWorkspaceTsdk": true
+}
