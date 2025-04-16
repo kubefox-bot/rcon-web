@@ -4,5 +4,4 @@ export const config = {
 	apiHost: API_HOST,
 	frontPort: FRONT_PORT,
 	masterKey: ENCRYPTION_KEY,
-	encryptionBackend: ENCRYPTION_METHOD,
 }
