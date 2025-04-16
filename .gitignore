@@ -1,6 +1,18 @@
+# Секреты
 .env
-node_modules
 
-!.yarn/
-!.yarn/**
+# Node
+node_modules/
+
+# Yarn
+.yarn/unplugged/
+.yarn/build-state.yml
+
+# Можно оставить .yarn/cache, если используешь zero-installs
+# Если НЕ коммитишь .yarn/cache — раскомментируй ↓
+# .yarn/cache/
+
+
+
+# Фронтенд сборка
 frontend/dist

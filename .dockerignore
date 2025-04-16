@@ -1,3 +1,16 @@
-.editorconfig
-.gitattributes
+# Git и системные файлы
+.git
 .gitignore
+.gitattributes
+.editorconfig
+.DS_Store
+
+# Исключаем node_modules (они не нужны в PnP)
+**/node_modules
+
+# Yarn кеш и временные файлы, которые не нужны в образе
+.yarn/unplugged/
+.yarn/build-state.yml
+
+# Исключаем dist (если фронт билдится в Docker)
+frontend/dist

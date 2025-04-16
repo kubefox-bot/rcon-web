@@ -1,12 +1,17 @@
-# === Stage: Frontend ===
 FROM marcaureln/volta:2.0.2-bookworm-slim AS frontend-builder
 
-WORKDIR /frontend
-COPY frontend/package.json frontend/yarn.lock frontend/.yarnrc.yml frontend/.yarn/ ./
+WORKDIR /app
+
+COPY frontend/package.json frontend/yarn.lock frontend/.yarnrc.yml ./
+COPY frontend/.yarn/ ./.yarn/
+
 RUN yarn install --immutable
 
 COPY frontend/ ./
+COPY frontend/.pnp.cjs ./
+
 RUN yarn build
+
 
 
 # === Stage: Backend (без cargo-chef, fast build)
@@ -29,15 +34,13 @@ FROM nginx:1.27-alpine
 
 RUN apk add --no-cache libssl3 gettext
 
-
 COPY --from=backend-builder /backend/target/x86_64-unknown-linux-musl/release/rcon-api /usr/local/bin/rcon-api
 
-
-COPY --from=frontend-builder /frontend/dist /var/www/html
+# ✅ исправлено здесь
+COPY --from=frontend-builder /app/dist /var/www/html
 
 COPY nginx/nginx.http.conf /etc/nginx/nginx.http.conf
 COPY nginx/nginx.https.conf /etc/nginx/nginx.https.conf
-
 
 COPY start.sh /start.sh
 RUN chmod +x /start.sh
