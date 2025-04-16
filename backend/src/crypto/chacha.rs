@@ -1,8 +1,6 @@
-use chacha20poly1305::{ChaCha20Poly1305, Key, Nonce};
+use base64::{Engine as _, engine::general_purpose};
 use chacha20poly1305::aead::{Aead, KeyInit};
-use base64::{engine::general_purpose, Engine as _};
-
-
+use chacha20poly1305::{ChaCha20Poly1305, Key, Nonce};
 
 use super::CryptoStorage;
 
@@ -20,7 +18,6 @@ impl CryptoChaCha20 {
 }
 
 impl CryptoStorage for CryptoChaCha20 {
-
     fn decrypt(&self, encrypted: &str) -> Option<String> {
         let decoded = general_purpose::STANDARD.decode(encrypted).ok()?;
         if decoded.len() < 12 {
@@ -33,6 +30,9 @@ impl CryptoStorage for CryptoChaCha20 {
         let cipher = ChaCha20Poly1305::new(key);
         let nonce = Nonce::from_slice(nonce_bytes);
 
-        cipher.decrypt(nonce, ciphertext).ok().and_then(|bytes| String::from_utf8(bytes).ok())
+        cipher
+            .decrypt(nonce, ciphertext)
+            .ok()
+            .and_then(|bytes| String::from_utf8(bytes).ok())
     }
 }

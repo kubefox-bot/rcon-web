@@ -1,31 +1,57 @@
-// crypto-storage-chacha.ts
-import nacl from 'tweetnacl'
-import { decodeUTF8, encodeBase64, decodeBase64 } from 'tweetnacl-util'
+import sodium from 'libsodium-wrappers'
 import { ICryptoStorage } from './type'
 
 export class CryptoStorageChaCha implements ICryptoStorage {
-  constructor(private readonly key: Uint8Array) {
-    if (key.length !== nacl.secretbox.keyLength) {
-      throw new Error(`Key must be ${nacl.secretbox.keyLength} bytes`)
+  private readonly key: Uint8Array
+
+  constructor(key: Uint8Array) {
+    if (key.length !== 32) {
+      throw new Error('ChaCha key must be 32 bytes')
     }
+    this.key = key
   }
 
-  encrypt(text: string): Promise<string> {
-    const nonce = nacl.randomBytes(nacl.secretbox.nonceLength)
-    const message = decodeUTF8(text)
-    const encrypted = nacl.secretbox(message, nonce, this.key)
-    const combined = new Uint8Array(nonce.length + encrypted.length)
+  async encrypt(text: string): Promise<string> {
+    await sodium.ready
+
+    const nonce = sodium.randombytes_buf(sodium.crypto_aead_chacha20poly1305_ietf_NPUBBYTES)
+    const message = sodium.from_string(text)
+
+    const ciphertext = sodium.crypto_aead_chacha20poly1305_ietf_encrypt(
+      message,
+      null, // AAD
+      null, // secret nonce
+      nonce,
+      this.key,
+    )
+
+    const combined = new Uint8Array(nonce.length + ciphertext.length)
     combined.set(nonce)
-    combined.set(encrypted, nonce.length)
-    return Promise.resolve(encodeBase64(combined))
+    combined.set(ciphertext, nonce.length)
+
+    return sodium.to_base64(combined)
   }
 
-  decrypt(cipherText: string): Promise<string | null> {
-    const combined = decodeBase64(cipherText)
-    const nonce = combined.slice(0, nacl.secretbox.nonceLength)
-    const message = combined.slice(nacl.secretbox.nonceLength)
-    const decrypted = nacl.secretbox.open(message, nonce, this.key)
-    const result = decrypted ? new TextDecoder().decode(decrypted) : null
-    return Promise.resolve(result)
+  async decrypt(encrypted: string): Promise<string | null> {
+    await sodium.ready
+
+    try {
+      const combined = sodium.from_base64(encrypted)
+      const nonce = combined.slice(0, sodium.crypto_aead_chacha20poly1305_ietf_NPUBBYTES)
+      const ciphertext = combined.slice(nonce.length)
+
+      const decrypted = sodium.crypto_aead_chacha20poly1305_ietf_decrypt(
+        null,
+        ciphertext,
+        null,
+        nonce,
+        this.key,
+      )
+
+      return sodium.to_string(decrypted)
+    } catch (err) {
+      console.warn('🔐 ChaCha decrypt failed:', err)
+      return null
+    }
   }
 }

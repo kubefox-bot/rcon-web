@@ -6,7 +6,6 @@ use tokio::sync::Mutex;
 use crate::auth::jwt::JwtManager;
 use crate::crypto::CryptoStorage;
 
-
 #[derive(Clone)]
 pub struct AppState {
     pub client: Arc<Mutex<Option<Connection<TcpStream>>>>,
