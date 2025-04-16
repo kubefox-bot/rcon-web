@@ -8,8 +8,9 @@ RUN yarn install --immutable --mode=skip-build
 
 
 COPY frontend/ ./
-RUN yarn build
+COPY frontend/.pnp.cjs ./
 
+RUN yarn build
 
 
 
