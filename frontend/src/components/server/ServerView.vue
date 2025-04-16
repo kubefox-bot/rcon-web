@@ -10,8 +10,8 @@
 </template>
 
 <script setup lang="ts">
-import ServerConnectForm from './ServerConnectForm.vue'
-import ServerList from './ServerList.vue'
+import ServerConnectForm from "./ServerConnectForm.vue";
+import ServerList from "./ServerList.vue";
 </script>
 
 <style scoped lang="scss">

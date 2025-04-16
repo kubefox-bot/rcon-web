@@ -20,46 +20,46 @@
 </template>
 
 <script setup lang="ts">
-import { useServerError } from '@/composables/useServerError'
-import { useServerStatus } from '@/composables/useServerStatus'
-import { sendCommand } from '@/handlers'
-import { onMounted, ref } from 'vue'
-import PanelWrapper from './PanelWrapper.vue'
-import TerminalView from './TerminalView.vue'
-import CommandList from './panels/CommandListPanel.vue'
-import ManualCommand from './panels/ManualCommandPanel.vue'
-import MapSelector from './panels/MapSelectorPanel.vue'
-import type { RconState } from './type'
+import { useServerError } from "@/composables/useServerError";
+import { useServerStatus } from "@/composables/useServerStatus";
+import { sendCommand } from "@/handlers";
+import { onMounted, ref } from "vue";
+import PanelWrapper from "./PanelWrapper.vue";
+import TerminalView from "./TerminalView.vue";
+import CommandList from "./panels/CommandListPanel.vue";
+import ManualCommand from "./panels/ManualCommandPanel.vue";
+import MapSelector from "./panels/MapSelectorPanel.vue";
+import type { RconState } from "./type";
 
-const state = ref<RconState>('ready')
-const status = useServerStatus()
+const state = ref<RconState>("ready");
+const status = useServerStatus();
 onMounted(() => {
-  status.checkStatus()
-})
+	status.checkStatus();
+});
 
-const output = ref('')
-const { setError, clearError } = useServerError()
+const output = ref("");
+const { setError, clearError } = useServerError();
 
 const handleSend = async (cmd: string) => {
-  output.value = ''
-  state.value = 'loading'
-  const result = await sendCommand({ command: cmd })
+	output.value = "";
+	state.value = "loading";
+	const result = await sendCommand({ command: cmd });
 
-  result
-    .map((res) => res.response)
-    .match(
-      (res) => {
-        clearError()
-        output.value = res
-        state.value = 'ready'
-      },
-      (err) => {
-        output.value = `❌ ${err}`
-        setError(err)
-        state.value = 'ready'
-      },
-    )
-}
+	result
+		.map((res) => res.response)
+		.match(
+			(res) => {
+				clearError();
+				output.value = res;
+				state.value = "ready";
+			},
+			(err) => {
+				output.value = `❌ ${err}`;
+				setError(err);
+				state.value = "ready";
+			},
+		);
+};
 </script>
 
 <style scoped lang="scss">

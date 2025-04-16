@@ -40,7 +40,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@biomejs/biome@npm:1.9.4":
+"@biomejs/biome@npm:^1.9.4":
   version: 1.9.4
   resolution: "@biomejs/biome@npm:1.9.4"
   dependencies:
@@ -1468,7 +1468,7 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "frontend@workspace:."
   dependencies:
-    "@biomejs/biome": "npm:1.9.4"
+    "@biomejs/biome": "npm:^1.9.4"
     "@eslint/js": "npm:^9.23.0"
     "@stablelib/chacha20poly1305": "npm:^2.0.1"
     "@stablelib/random": "npm:^2.0.1"

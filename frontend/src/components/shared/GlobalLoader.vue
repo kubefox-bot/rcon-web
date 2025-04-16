@@ -3,10 +3,10 @@
 </template>
 
 <script setup lang="ts">
-import { useGlobalLoader } from '@/composables/useGlobalLoader'
-import Loader from './Loader.vue'
+import { useGlobalLoader } from "@/composables/useGlobalLoader";
+import Loader from "./Loader.vue";
 
-const { isLoading } = useGlobalLoader()
+const { isLoading } = useGlobalLoader();
 </script>
 
 <style scoped lang="scss">

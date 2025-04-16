@@ -1,13 +1,13 @@
 export interface ConnectPayload {
-  host: string
-  port: number
-  password: string
+	host: string;
+	port: number;
+	password: string;
 }
 
 export interface CommandPayload {
-  command: string
+	command: string;
 }
 
 export interface RconResponse {
-  response: string
+	response: string;
 }

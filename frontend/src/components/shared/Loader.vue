@@ -6,21 +6,21 @@
 </template>
 
 <script setup lang="ts">
-import { computed } from 'vue'
+import { computed } from "vue";
 
 const props = defineProps<{
-  message?: string
-  height?: string
-  width?: string
-  size?: string
-}>()
+	message?: string;
+	height?: string;
+	width?: string;
+	size?: string;
+}>();
 
 const customStyle = computed(() => ({
-  height: props.height || 'auto',
-  width: props.width || 'auto',
-}))
+	height: props.height || "auto",
+	width: props.width || "auto",
+}));
 
-const spinnerSize = computed(() => props.size || '48px')
+const spinnerSize = computed(() => props.size || "48px");
 </script>
 
 <style scoped lang="scss">

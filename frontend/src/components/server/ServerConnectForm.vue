@@ -18,31 +18,31 @@
 </template>
 
 <script setup lang="ts">
-import { useAppStep } from '@/composables/useAppStep'
-import { useConnectionForm } from '@/composables/useConnectionForm'
-import { useServerConnect } from '@/composables/useServerConnect'
-import { ref } from 'vue'
-import BaseInput from '../shared/BaseInput.vue'
-const { host, port, password } = useConnectionForm()
-const { connect } = useServerConnect()
-const { setStep } = useAppStep()
-const error = ref('')
+import { useAppStep } from "@/composables/useAppStep";
+import { useConnectionForm } from "@/composables/useConnectionForm";
+import { useServerConnect } from "@/composables/useServerConnect";
+import { ref } from "vue";
+import BaseInput from "../shared/BaseInput.vue";
+const { host, port, password } = useConnectionForm();
+const { connect } = useServerConnect();
+const { setStep } = useAppStep();
+const error = ref("");
 
 const handleConnect = async () => {
-  error.value = ''
-  const result = await connect({
-    host: host.value,
-    port: port.value,
-    password: password.value,
-  })
+	error.value = "";
+	const result = await connect({
+		host: host.value,
+		port: port.value,
+		password: password.value,
+	});
 
-  result.match(
-    () => setStep('rcon'),
-    (err) => {
-      error.value = err
-    },
-  )
-}
+	result.match(
+		() => setStep("rcon"),
+		(err) => {
+			error.value = err;
+		},
+	);
+};
 </script>
 
 <style scoped lang="scss">

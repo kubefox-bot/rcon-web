@@ -6,11 +6,11 @@
 
 <script setup lang="ts">
 defineProps<{
-  variant?: 'default' | 'danger' | 'ghost'
-  title?: string
-}>()
+	variant?: "default" | "danger" | "ghost";
+	title?: string;
+}>();
 
-defineEmits<(e: 'click') => void>()
+defineEmits<(e: "click") => void>();
 </script>
 
 <style scoped lang="scss">

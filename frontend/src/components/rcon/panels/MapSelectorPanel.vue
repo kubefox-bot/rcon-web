@@ -11,18 +11,18 @@
 </template>
 
 <script setup lang="ts">
-import type { RconSendEvent } from '../type'
-const emit = defineEmits<RconSendEvent>()
+import type { RconSendEvent } from "../type";
+const emit = defineEmits<RconSendEvent>();
 
 const maps = [
-  'de_dust2',
-  'de_mirage',
-  'de_inferno',
-  'de_nuke',
-  'de_overpass',
-  'de_vertigo',
-  'cs_office',
-]
+	"de_dust2",
+	"de_mirage",
+	"de_inferno",
+	"de_nuke",
+	"de_overpass",
+	"de_vertigo",
+	"cs_office",
+];
 </script>
 
 <style scoped lang="scss">

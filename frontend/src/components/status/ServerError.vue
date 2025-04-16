@@ -5,9 +5,9 @@
 </template>
 
 <script setup lang="ts">
-import { useServerError } from '@/composables/useServerError'
+import { useServerError } from "@/composables/useServerError";
 
-const { errorMessage } = useServerError()
+const { errorMessage } = useServerError();
 </script>
 
 <style scoped lang="scss">

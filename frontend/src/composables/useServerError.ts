@@ -1,19 +1,19 @@
-import { ref } from 'vue'
+import { ref } from "vue";
 
-const errorMessage = ref<string | null>(null)
+const errorMessage = ref<string | null>(null);
 
 export function useServerError() {
-  const setError = (message: string) => {
-    errorMessage.value = message
-  }
+	const setError = (message: string) => {
+		errorMessage.value = message;
+	};
 
-  const clearError = () => {
-    errorMessage.value = null
-  }
+	const clearError = () => {
+		errorMessage.value = null;
+	};
 
-  return {
-    errorMessage,
-    setError,
-    clearError,
-  }
+	return {
+		errorMessage,
+		setError,
+		clearError,
+	};
 }

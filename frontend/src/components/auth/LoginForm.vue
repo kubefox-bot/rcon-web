@@ -8,27 +8,27 @@
 </template>
 
 <script setup lang="ts">
-import { useAppStep } from '@/composables/useAppStep'
-import { useAuth } from '@/composables/useAuth'
-import { ref } from 'vue'
+import { useAppStep } from "@/composables/useAppStep";
+import { useAuth } from "@/composables/useAuth";
+import { ref } from "vue";
 
-const password = ref('')
-const error = ref('')
-const { login } = useAuth()
+const password = ref("");
+const error = ref("");
+const { login } = useAuth();
 
 const handleLogin = async () => {
-  const result = await login(password.value)
-  const { setStep } = useAppStep()
-  result.match(
-    () => {
-      error.value = ''
-      setStep('server')
-    },
-    (err) => {
-      error.value = `Ошибка: ${err}`
-    },
-  )
-}
+	const result = await login(password.value);
+	const { setStep } = useAppStep();
+	result.match(
+		() => {
+			error.value = "";
+			setStep("server");
+		},
+		(err) => {
+			error.value = `Ошибка: ${err}`;
+		},
+	);
+};
 </script>
 
 <style scoped lang="scss">
