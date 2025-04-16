@@ -11,14 +11,24 @@ export class EncryptedPasswordStorage {
 		this.crypto = new CryptoStorageChaCha(keyBytes)
 	}
 
+	isProbablyEncrypted(value: string): boolean {
+		return value.startsWith('enc:')
+	  }
+
 	async encrypt(password: string): Promise<string | null> {
+		if (this.isProbablyEncrypted(password) || !this.crypto) {
+			return password
+		  }
 		try {
-			return await this.crypto.encrypt(password)
+			const encrypted = await this.crypto.encrypt(password);
+			return await `enc:${encrypted}`
 		} catch (e: unknown) {
 			console.warn("⚠️ Ошибка при шифровании:", e)
 			return null
 		}
 	}
+
+	
 
 	async decrypt(encrypted: string): Promise<string | null> {
 		if (!this.crypto) {

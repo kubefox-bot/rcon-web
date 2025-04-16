@@ -19,7 +19,11 @@ impl CryptoChaCha20 {
 
 impl CryptoStorage for CryptoChaCha20 {
     fn decrypt(&self, encrypted: &str) -> Option<String> {
-        let decoded = general_purpose::STANDARD.decode(encrypted).ok()?;
+        const PREFIX: &str = "enc:";
+
+        let encoded = encrypted.strip_prefix(PREFIX).unwrap_or(encrypted);
+
+        let decoded = general_purpose::STANDARD.decode(encoded).ok()?;
         if decoded.len() < 12 {
             tracing::error!("ChaCha encrypted input too short");
             return None;
