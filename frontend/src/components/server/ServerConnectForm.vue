@@ -38,7 +38,9 @@ const handleConnect = async () => {
 
   result.match(
     () => setStep('rcon'),
-    (err) => (error.value = err),
+    (err) => {
+      error.value = err
+    },
   )
 }
 </script>

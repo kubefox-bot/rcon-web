@@ -1,8 +1,7 @@
-import path from 'path'
+import path from 'node:path'
 import vue from '@vitejs/plugin-vue'
 import { defineConfig, loadEnv } from 'vite'
 import compression from 'vite-plugin-compression'
-import eslint from 'vite-plugin-eslint'
 
 export default defineConfig(({ mode }) => {
   const env = loadEnv(mode, process.cwd(), '')
@@ -10,7 +9,6 @@ export default defineConfig(({ mode }) => {
   return {
     plugins: [
       vue(),
-      eslint(),
       compression({
         algorithm: 'gzip',
         ext: '.gz',

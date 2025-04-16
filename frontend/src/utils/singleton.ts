@@ -1,5 +1,3 @@
-// biome-ignore lint/suspicious/noExplicitAny: <explanation>
-// biome-ignore lint/suspicious/noShadowRestrictedNames: <explanation>
 export function Singleton<T extends new (...args: any[]) => any>(constructor: T) {
   return class extends constructor {
     private static _instance: InstanceType<T>
@@ -9,6 +7,7 @@ export function Singleton<T extends new (...args: any[]) => any>(constructor: T)
         super(...args)
         ;(constructor as any)._instance = this
       }
+
       return (constructor as any)._instance
     }
   }

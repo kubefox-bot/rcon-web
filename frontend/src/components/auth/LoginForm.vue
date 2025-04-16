@@ -24,7 +24,9 @@ const handleLogin = async () => {
       error.value = ''
       setStep('server')
     },
-    (err) => (error.value = `Ошибка: ${err}`),
+    (err) => {
+      error.value = `Ошибка: ${err}`
+    },
   )
 }
 </script>
