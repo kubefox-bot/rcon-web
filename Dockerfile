@@ -11,12 +11,10 @@ WORKDIR /frontend
 
 COPY frontend/package.json frontend/yarn.lock frontend/.yarnrc.yml ./
 COPY frontend/.yarn/ ./.yarn/
+RUN yarn install --immutable --mode=skip-build
 
-RUN yarn install --immutable
 
 COPY frontend/ ./
-COPY frontend/.pnp.cjs ./
-
 RUN yarn build
 
 
