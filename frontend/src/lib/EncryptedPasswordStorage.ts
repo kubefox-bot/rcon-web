@@ -1,6 +1,6 @@
 import { config } from '@/config'
-import { ICryptoStorage } from './type'
 import { CryptoStorageChaCha } from './cryptoStorageChacha'
+import type { ICryptoStorage } from './type'
 
 export class EncryptedPasswordStorage {
   private crypto: ICryptoStorage

@@ -1,31 +1,30 @@
 {
-    "compilerOptions": {
-      "target": "ESNext",
-      "module": "ESNext",
-      "lib": ["DOM", "ESNext"],
-      "moduleResolution": "bundler",
-      "strict": true,
-      "esModuleInterop": true,
-      "forceConsistentCasingInFileNames": true,
-      "skipLibCheck": true,
-      "isolatedModules": true,
-      "noEmit": true,
-      "resolveJsonModule": true,
-      "experimentalDecorators": true,
-      "emitDecoratorMetadata": true,
-      
-      "jsx": "preserve",
-      "types": ["vite/client", "node"],
-      "baseUrl": "./src",
-      "paths": {
-        "@/*": ["*"],
-        "@handlers/*": ["handlers/*"],
-        "@lib": ["lib"],
-        "@view/*": ["view/*"],
-        "@components/*": ["view/components/*"],
-        "@pages/*": ["view/pages/*"]
-      }
-    },
-    "include": ["src/**/*", "src/env.d.ts"]
-  }
-  
+  "compilerOptions": {
+    "target": "ESNext",
+    "module": "ESNext",
+    "lib": ["DOM", "ESNext"],
+    "moduleResolution": "bundler",
+    "strict": true,
+    "esModuleInterop": true,
+    "forceConsistentCasingInFileNames": true,
+    "skipLibCheck": true,
+    "isolatedModules": true,
+    "noEmit": true,
+    "resolveJsonModule": true,
+    "experimentalDecorators": true,
+    "emitDecoratorMetadata": true,
+
+    "jsx": "preserve",
+    "types": ["vite/client", "node"],
+    "baseUrl": "./src",
+    "paths": {
+      "@/*": ["*"],
+      "@handlers/*": ["handlers/*"],
+      "@lib": ["lib"],
+      "@view/*": ["view/*"],
+      "@components/*": ["view/components/*"],
+      "@pages/*": ["view/pages/*"]
+    }
+  },
+  "include": ["src/**/*", "src/env.d.ts"]
+}

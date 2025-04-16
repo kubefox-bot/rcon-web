@@ -1,6 +1,6 @@
 import { ChaCha20Poly1305 } from '@stablelib/chacha20poly1305'
 import { randomBytes } from '@stablelib/random'
-import { ICryptoStorage } from './type'
+import type { ICryptoStorage } from './type'
 
 export class CryptoStorageChaCha implements ICryptoStorage {
   private readonly key: Uint8Array
@@ -28,7 +28,7 @@ export class CryptoStorageChaCha implements ICryptoStorage {
   async decrypt(cipherText: string): Promise<string | null> {
     try {
       const binary = atob(cipherText)
-      const combined = Uint8Array.from(binary, c => c.charCodeAt(0))
+      const combined = Uint8Array.from(binary, (c) => c.charCodeAt(0))
       const nonce = combined.slice(0, 12)
       const data = combined.slice(12)
       const cipher = new ChaCha20Poly1305(this.key)

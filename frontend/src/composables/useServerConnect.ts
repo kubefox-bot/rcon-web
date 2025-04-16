@@ -1,9 +1,9 @@
 import { connectToServer } from '@/handlers'
-import { ConnectPayload } from '@/models'
 import { encryptedPasswordStorage } from '@/lib/EncryptedPasswordStorage'
 import { serverStorage } from '@/lib/serverStorage'
+import type { ConnectPayload } from '@/models'
+import { type Result, err, ok } from 'neverthrow'
 import { useServerError } from './useServerError'
-import { Result, ok, err } from 'neverthrow'
 
 export function useServerConnect() {
   const { setError } = useServerError()

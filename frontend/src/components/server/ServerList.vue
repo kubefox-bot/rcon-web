@@ -17,10 +17,10 @@
 </template>
 
 <script setup lang="ts">
-import { ref } from 'vue'
 import { useAppStep } from '@/composables/useAppStep'
-import { serverStorage, StoredServer } from '@/lib/serverStorage'
 import { useServerConnect } from '@/composables/useServerConnect'
+import { type StoredServer, serverStorage } from '@/lib/serverStorage'
+import { ref } from 'vue'
 import BaseButton from '../shared/BaseButton.vue'
 
 const servers = ref<StoredServer[]>(serverStorage.loadAll())

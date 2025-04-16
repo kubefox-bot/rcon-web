@@ -1,6 +1,6 @@
+import { disconnect, sendCommand } from '@/handlers'
+import type { Result } from 'neverthrow'
 import { ref } from 'vue'
-import { sendCommand, disconnect } from '@/handlers'
-import { Result } from 'neverthrow'
 
 const output = ref('')
 const isLoading = ref(false)

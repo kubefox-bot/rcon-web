@@ -1,6 +1,6 @@
+import type { ConnectPayload } from '@/models'
+import type { Result } from 'neverthrow'
 import { sendRconRequest } from './rcon'
-import { ConnectPayload } from '@/models'
-import { Result } from 'neverthrow'
 
 export async function connectToServer(
   payload: ConnectPayload,

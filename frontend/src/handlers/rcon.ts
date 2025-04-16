@@ -1,8 +1,8 @@
 import { useGlobalLoader } from '@/composables/useGlobalLoader'
-import { api } from '../lib/api'
-import { Result, ok, err } from 'neverthrow'
+import type { ConnectPayload } from '@/models'
 import type { AxiosError } from 'axios'
-import { ConnectPayload } from '@/models'
+import { type Result, err, ok } from 'neverthrow'
+import { api } from '../lib/api'
 
 export async function sendRconRequest<T>(
   action: string,

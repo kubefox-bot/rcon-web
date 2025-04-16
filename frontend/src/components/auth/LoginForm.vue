@@ -8,9 +8,9 @@
 </template>
 
 <script setup lang="ts">
-import { ref } from 'vue'
-import { useAuth } from '@/composables/useAuth'
 import { useAppStep } from '@/composables/useAppStep'
+import { useAuth } from '@/composables/useAuth'
+import { ref } from 'vue'
 
 const password = ref('')
 const error = ref('')

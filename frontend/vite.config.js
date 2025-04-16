@@ -1,23 +1,26 @@
-import { defineConfig, loadEnv } from 'vite'
-import vue from '@vitejs/plugin-vue'
-import eslint from 'vite-plugin-eslint'
 import path from 'path'
+import vue from '@vitejs/plugin-vue'
+import { defineConfig, loadEnv } from 'vite'
 import compression from 'vite-plugin-compression'
+import eslint from 'vite-plugin-eslint'
 
 export default defineConfig(({ mode }) => {
   const env = loadEnv(mode, process.cwd(), '')
 
   return {
-    plugins: [vue(), eslint(),
-    compression({
-      algorithm: 'gzip',
-      ext: '.gz',
-      threshold: 1024,
-      deleteOriginFile: false,
-    })],
+    plugins: [
+      vue(),
+      eslint(),
+      compression({
+        algorithm: 'gzip',
+        ext: '.gz',
+        threshold: 1024,
+        deleteOriginFile: false,
+      }),
+    ],
     preview: {
       host: true,
-      allowedHosts: true
+      allowedHosts: true,
     },
     server: {
       host: '0.0.0.0',
@@ -65,6 +68,5 @@ export default defineConfig(({ mode }) => {
         },
       },
     },
-
   }
 })

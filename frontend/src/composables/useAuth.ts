@@ -1,10 +1,10 @@
-import { ref, computed } from 'vue'
-import { api } from '@/lib/api'
-import { Result, ok, err } from 'neverthrow'
 import { jwt } from '@/lib'
-import { useFlashMessage } from './useFlashMessage'
+import { api } from '@/lib/api'
+import type { AxiosError } from 'axios'
+import { type Result, err, ok } from 'neverthrow'
+import { computed, ref } from 'vue'
 import { useAppStep } from './useAppStep'
-import { AxiosError } from 'axios'
+import { useFlashMessage } from './useFlashMessage'
 
 const isAuthenticated = ref(jwt.isAuthenticated())
 

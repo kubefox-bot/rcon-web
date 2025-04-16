@@ -13,9 +13,7 @@ const props = defineProps<{
   type?: string
 }>()
 
-const emit = defineEmits<{
-  (e: 'update:modelValue', value: string | number): void
-}>()
+const emit = defineEmits<(e: 'update:modelValue', value: string | number) => void>()
 
 function handleInput(event: Event) {
   const target = event.target as HTMLInputElement

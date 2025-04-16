@@ -1,7 +1,7 @@
 import axios from 'axios'
 
-import { jwt } from './jwtStorage'
 import { forceLogout } from '@/composables/useAuth'
+import { jwt } from './jwtStorage'
 
 export const api = axios.create({
   baseURL: '/api',

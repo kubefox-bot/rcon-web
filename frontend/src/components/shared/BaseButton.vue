@@ -10,9 +10,7 @@ defineProps<{
   title?: string
 }>()
 
-defineEmits<{
-  (e: 'click'): void
-}>()
+defineEmits<(e: 'click') => void>()
 </script>
 
 <style scoped lang="scss">

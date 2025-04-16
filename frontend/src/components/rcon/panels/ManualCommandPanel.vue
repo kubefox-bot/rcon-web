@@ -10,7 +10,7 @@
 
 <script setup lang="ts">
 import { ref } from 'vue'
-import { RconSendEvent } from '../type'
+import type { RconSendEvent } from '../type'
 
 const command = ref('')
 const emit = defineEmits<RconSendEvent>()

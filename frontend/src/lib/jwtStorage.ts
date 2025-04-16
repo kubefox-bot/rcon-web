@@ -1,6 +1,6 @@
 import { Singleton } from '@/utils/singleton'
 import { jwtDecode } from 'jwt-decode'
-import { Result, ok, err } from 'neverthrow'
+import { type Result, err, ok } from 'neverthrow'
 
 interface Claims {
   sub: string

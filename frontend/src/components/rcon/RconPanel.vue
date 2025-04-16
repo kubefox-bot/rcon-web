@@ -20,16 +20,16 @@
 </template>
 
 <script setup lang="ts">
-import { onMounted, ref } from 'vue'
-import CommandList from './panels/CommandListPanel.vue'
-import TerminalView from './TerminalView.vue'
-import { sendCommand } from '@/handlers'
-import MapSelector from './panels/MapSelectorPanel.vue'
-import ManualCommand from './panels/ManualCommandPanel.vue'
-import { RconState } from './type'
 import { useServerError } from '@/composables/useServerError'
 import { useServerStatus } from '@/composables/useServerStatus'
+import { sendCommand } from '@/handlers'
+import { onMounted, ref } from 'vue'
 import PanelWrapper from './PanelWrapper.vue'
+import TerminalView from './TerminalView.vue'
+import CommandList from './panels/CommandListPanel.vue'
+import ManualCommand from './panels/ManualCommandPanel.vue'
+import MapSelector from './panels/MapSelectorPanel.vue'
+import type { RconState } from './type'
 
 const state = ref<RconState>('ready')
 const status = useServerStatus()

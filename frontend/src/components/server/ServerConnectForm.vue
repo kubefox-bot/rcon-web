@@ -18,10 +18,10 @@
 </template>
 
 <script setup lang="ts">
-import { ref } from 'vue'
 import { useAppStep } from '@/composables/useAppStep'
 import { useConnectionForm } from '@/composables/useConnectionForm'
 import { useServerConnect } from '@/composables/useServerConnect'
+import { ref } from 'vue'
 import BaseInput from '../shared/BaseInput.vue'
 const { host, port, password } = useConnectionForm()
 const { connect } = useServerConnect()
