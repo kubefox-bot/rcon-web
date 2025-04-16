@@ -6,12 +6,12 @@ import { computed, ref } from "vue"
 import { useAppStep } from "./useAppStep"
 import { useFlashMessage } from "./useFlashMessage"
 
-const isAuthenticated = ref(jwt.isAuthenticated())
+
 
 export function useAuth() {
 	const flash = useFlashMessage()
 	const { setStep } = useAppStep()
-
+	const isAuthenticated = ref(jwt.isAuthenticated())
 	const login = async (
 		password: string,
 	): Promise<Result<"logged-in", string>> => {
