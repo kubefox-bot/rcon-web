@@ -12,3 +12,4 @@ declare const FRONT_PORT: string
 declare const AUTH_TOKEN: string
 declare const FRONT_HOST: string
 declare const ENCRYPTION_KEY: string
+declare const ENCRYPTION_METHOD: string

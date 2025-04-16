@@ -1,4 +1,6 @@
-export class CryptoStorage {
+import { ICryptoStorage } from "./type"
+
+export class CryptoStorageAES implements ICryptoStorage {
   constructor(private readonly key: string) {}
 
   async encrypt(text: string): Promise<string> {
