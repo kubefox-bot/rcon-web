@@ -1,9 +1,9 @@
-import { sendRconRequest } from './rcon'
-import { ConnectPayload } from '@/models'
-import { Result } from 'neverthrow'
+import type { ConnectPayload } from "@/models"
+import type { Result } from "neverthrow"
+import { sendRconRequest } from "./rcon"
 
 export async function connectToServer(
-  payload: ConnectPayload,
-): Promise<Result<'connected', string>> {
-  return sendRconRequest<'connected'>('connect', payload)
+	payload: ConnectPayload,
+): Promise<Result<"connected", string>> {
+	return sendRconRequest<"connected">("connect", payload)
 }

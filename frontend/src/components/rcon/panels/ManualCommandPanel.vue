@@ -9,16 +9,16 @@
 </template>
 
 <script setup lang="ts">
-import { ref } from 'vue'
-import { RconSendEvent } from '../type'
+import { ref } from "vue"
+import type { RconSendEvent } from "../type"
 
-const command = ref('')
+const command = ref("")
 const emit = defineEmits<RconSendEvent>()
 
 const handleSubmit = () => {
-  if (!command.value.trim()) return
-  emit('send', command.value.trim())
-  command.value = ''
+	if (!command.value.trim()) return
+	emit("send", command.value.trim())
+	command.value = ""
 }
 </script>
 

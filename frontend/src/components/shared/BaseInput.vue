@@ -7,20 +7,19 @@
 
 <script setup lang="ts">
 const props = defineProps<{
-  modelValue: string | number
-  label?: string
-  placeholder?: string
-  type?: string
+	modelValue: string | number
+	label?: string
+	placeholder?: string
+	type?: string
 }>()
 
-const emit = defineEmits<{
-  (e: 'update:modelValue', value: string | number): void
-}>()
+const emit =
+	defineEmits<(e: "update:modelValue", value: string | number) => void>()
 
 function handleInput(event: Event) {
-  const target = event.target as HTMLInputElement
-  const value = props.type === 'number' ? Number(target.value) : target.value
-  emit('update:modelValue', value)
+	const target = event.target as HTMLInputElement
+	const value = props.type === "number" ? Number(target.value) : target.value
+	emit("update:modelValue", value)
 }
 </script>
 

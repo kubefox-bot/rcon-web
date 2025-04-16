@@ -6,7 +6,7 @@
 </template>
 
 <script setup lang="ts">
-import GlobalLoader from '../shared/GlobalLoader.vue'
+import GlobalLoader from "../shared/GlobalLoader.vue"
 
 defineProps<{ status: string }>()
 </script>

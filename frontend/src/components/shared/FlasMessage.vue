@@ -8,7 +8,7 @@
 </template>
 
 <script setup lang="ts">
-import { useFlashMessage } from '@/composables/useFlashMessage'
+import { useFlashMessage } from "@/composables/useFlashMessage"
 
 const { message, visible } = useFlashMessage()
 </script>

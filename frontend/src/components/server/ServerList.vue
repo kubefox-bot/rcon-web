@@ -17,11 +17,11 @@
 </template>
 
 <script setup lang="ts">
-import { ref } from 'vue'
-import { useAppStep } from '@/composables/useAppStep'
-import { serverStorage, StoredServer } from '@/lib/serverStorage'
-import { useServerConnect } from '@/composables/useServerConnect'
-import BaseButton from '../shared/BaseButton.vue'
+import { useAppStep } from "@/composables/useAppStep"
+import { useServerConnect } from "@/composables/useServerConnect"
+import { type StoredServer, serverStorage } from "@/lib/serverStorage"
+import { ref } from "vue"
+import BaseButton from "../shared/BaseButton.vue"
 
 const servers = ref<StoredServer[]>(serverStorage.loadAll())
 
@@ -29,17 +29,17 @@ const { connect } = useServerConnect()
 const { setStep } = useAppStep()
 
 const connectTo = async (server: StoredServer) => {
-  const result = await connect(server)
+	const result = await connect(server)
 
-  result.match(
-    () => setStep('rcon'),
-    (err) => alert(`Ошибка подключения: ${err}`),
-  )
+	result.match(
+		() => setStep("rcon"),
+		(err) => alert(`Ошибка подключения: ${err}`),
+	)
 }
 
 const remove = (index: number) => {
-  serverStorage.remove(index)
-  servers.value = serverStorage.loadAll()
+	serverStorage.remove(index)
+	servers.value = serverStorage.loadAll()
 }
 </script>
 

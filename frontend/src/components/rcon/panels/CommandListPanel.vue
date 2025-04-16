@@ -16,7 +16,7 @@
 </template>
 
 <script setup lang="ts">
-import { RconSendEvent } from '../type'
+import type { RconSendEvent } from "../type"
 const emit = defineEmits<RconSendEvent>()
 </script>
 
