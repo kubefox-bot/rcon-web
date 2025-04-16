@@ -6,8 +6,6 @@ import { computed, ref } from "vue"
 import { useAppStep } from "./useAppStep"
 import { useFlashMessage } from "./useFlashMessage"
 
-
-
 export function useAuth() {
 	const flash = useFlashMessage()
 	const { setStep } = useAppStep()

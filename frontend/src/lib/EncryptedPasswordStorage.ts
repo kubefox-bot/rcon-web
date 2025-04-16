@@ -12,23 +12,21 @@ export class EncryptedPasswordStorage {
 	}
 
 	isProbablyEncrypted(value: string): boolean {
-		return value.startsWith('enc:')
-	  }
+		return value.startsWith("enc:")
+	}
 
 	async encrypt(password: string): Promise<string | null> {
 		if (this.isProbablyEncrypted(password) || !this.crypto) {
 			return password
-		  }
+		}
 		try {
-			const encrypted = await this.crypto.encrypt(password);
+			const encrypted = await this.crypto.encrypt(password)
 			return await `enc:${encrypted}`
 		} catch (e: unknown) {
 			console.warn("⚠️ Ошибка при шифровании:", e)
 			return null
 		}
 	}
-
-	
 
 	async decrypt(encrypted: string): Promise<string | null> {
 		if (!this.crypto) {
