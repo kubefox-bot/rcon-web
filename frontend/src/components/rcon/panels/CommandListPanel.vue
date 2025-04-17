@@ -11,6 +11,12 @@
       <li>
         <button @click="emit('send', 'say Hello from panel')">💬 Say</button>
       </li>
+      <li>
+        <button @click="emit('send', 'mp_pause_match')">⏸️ Пауза</button>
+      </li>
+      <li>
+        <button @click="emit('send', 'mp_unpause_match')">▶️ Снять паузу</button>
+      </li>
     </ul>
   </div>
 </template>

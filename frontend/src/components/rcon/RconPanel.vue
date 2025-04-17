@@ -8,6 +8,15 @@
         <PanelWrapper title="Map Selector">
           <MapSelector @send="handleSend" />
         </PanelWrapper>
+        <PanelWrapper title="Game Mode Selector">
+          <GameModePanel @send="handleSend" />
+        </PanelWrapper>
+        <PanelWrapper title="Bot Control">
+  <BotControlPanel @send="handleSend" />
+</PanelWrapper>
+<PanelWrapper title="Warmup Control">
+  <WarmupControlPanel @send="handleSend" />
+</PanelWrapper>
 
         <ManualCommand @send="handleSend" />
       </div>
@@ -26,9 +35,12 @@ import { sendCommand } from "@/handlers"
 import { onMounted, ref } from "vue"
 import PanelWrapper from "./PanelWrapper.vue"
 import TerminalView from "./TerminalView.vue"
+import BotControlPanel from "./panels/BotControlPanel.vue"
 import CommandList from "./panels/CommandListPanel.vue"
+import GameModePanel from "./panels/GameModePanel.vue"
 import ManualCommand from "./panels/ManualCommandPanel.vue"
 import MapSelector from "./panels/MapSelectorPanel.vue"
+import WarmupControlPanel from "./panels/WarmupControlPanel.vue"
 import type { RconState } from "./type"
 
 const state = ref<RconState>("ready")

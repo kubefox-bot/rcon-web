@@ -15,13 +15,21 @@ import type { RconSendEvent } from "../type"
 const emit = defineEmits<RconSendEvent>()
 
 const maps = [
+	"de_ancient",
+	"de_anubis",
 	"de_dust2",
-	"de_mirage",
 	"de_inferno",
+	"de_mirage",
 	"de_nuke",
+	"de_train",
 	"de_overpass",
 	"de_vertigo",
+	"de_basalt",
+	"de_edin",
+	"de_palais",
+	"de_whistle",
 	"cs_office",
+	"cs_italy",
 ]
 </script>
 
