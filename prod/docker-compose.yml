@@ -1,41 +1,71 @@
 services:
+  traefik:
+    image: traefik:v3.3
+    container_name: traefik
+    restart: unless-stopped
+    command:
+      - --providers.docker=true
+      - --providers.docker.exposedbydefault=false
+      - --entrypoints.web.address=:80
+      - --entrypoints.websecure.address=:443
+      - --certificatesresolvers.le.acme.tlschallenge=true
+      - --certificatesresolvers.le.acme.email=${TRAEFIK_ACME_EMAIL}
+      - --certificatesresolvers.le.acme.storage=/letsencrypt/acme.json
+    ports:
+      - "80:80"
+      - "443:443"
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock:ro
+      - traefik-letsencrypt:/letsencrypt
+    networks:
+      - web
+
   rcon:
     image: ghcr.io/xymox72/rcon:latest
     container_name: rcon
-
-    ports:
-      - "80:80"
-      - "8443:8443"
-
+    restart: unless-stopped
     env_file:
       - .env
-
     environment:
-      - RCON_DOMAIN=yourdomain.com
-
+      # Keep app container in HTTP mode; TLS is terminated by Traefik.
+      - RCON_DOMAIN=localhost
+    labels:
+      - traefik.enable=true
+      - traefik.docker.network=web
+      - traefik.http.routers.rcon.rule=Host(`${RCON_DOMAIN}`)
+      - traefik.http.routers.rcon.entrypoints=websecure
+      - traefik.http.routers.rcon.tls=true
+      - traefik.http.routers.rcon.tls.certresolver=le
+      - traefik.http.services.rcon.loadbalancer.server.port=80
     volumes:
       - .env:/app/.env:ro
-      - ./certs:/etc/nginx/certs:ro
-
     depends_on:
       - cs2
+    networks:
+      - web
 
   cs2:
-    image: joedwards32/cs2                              # 📦 готовый образ CS2
-    container_name: cs2                                 # 👈 имя контейнера
-    restart: unless-stopped                             # 🔁 перезапуск при падении
+    image: joedwards32/cs2
+    container_name: cs2
+    restart: unless-stopped
     ports:
-      - "27015:27015/tcp"                               # 📡 основной порт
+      - "27015:27015/tcp"
       - "27015:27015/udp"
-      - "27020:27020/udp"                               # 📺 GOTV
-      - "27050:27050/tcp"                               # 🔐 RCON
+      - "27020:27020/udp"
+      - "27050:27050/tcp"
     volumes:
-      - cs2-data:/home/steam/cs2-dedicated              # 💾 сохраняем все данные сервера на диск
+      - cs2-data:/home/steam/cs2-dedicated
     env_file:
-      - .env  
+      - .env
+    networks:
+      - web
 
-
-  
 volumes:
-  cs2-data:  # 💾 Храним файлы CS2 (карты, конфиги, логи и т.п.)
+  cs2-data:
     driver: local
+  traefik-letsencrypt:
+    driver: local
+
+networks:
+  web:
+    driver: bridge
