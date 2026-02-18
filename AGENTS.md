@@ -65,6 +65,7 @@ Frontend:
 ```bash
 cd frontend
 yarn lint
+yarn typecheck
 yarn build
 ```
 
@@ -78,7 +79,7 @@ cargo build
 
 ## SKILLS (Required Verification Process)
 - For any project change, run both validation flows:
-- Frontend: `cd frontend && yarn lint && yarn build`
+- Frontend: `cd frontend && yarn lint && yarn typecheck && yarn build`
 - Backend: `cd backend && cargo fmt -- --check && cargo clippy --all-targets --all-features -- -D warnings && cargo build`
 - If `Dockerfile`, `Dockerfile.dev`, `docker-compose.yml`, `nginx/*`, `start.sh`, or networking/infra code changed:
 - required: verify dev image build: `docker compose build rcon-dev`
@@ -93,5 +94,4 @@ cargo build
 - Prefer minimal, targeted changes; avoid unrelated mass refactors.
 
 ## Useful Notes
-- CI checks Rust (`clippy` + `fmt --check`) and Frontend (`yarn lint`, Biome).
-- Repository contains `frontend/src/handlers/disconnet.ts` (filename typo is intentional for now). Do not rename it unless explicitly requested, to avoid breaking imports.
+- CI checks Rust (`clippy` + `fmt --check`) and Frontend (`yarn lint` + `yarn typecheck`).
