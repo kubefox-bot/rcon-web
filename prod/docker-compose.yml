@@ -57,6 +57,8 @@ services:
       - cs2-data:/home/steam/cs2-dedicated
     env_file:
       - .env
+    networks:
+      - web
 
 volumes:
   cs2-data:
