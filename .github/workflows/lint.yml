@@ -45,4 +45,8 @@ jobs:
         working-directory: frontend
         run: yarn lint
 
+      - name: Run typecheck
+        working-directory: frontend
+        run: yarn typecheck
+
         

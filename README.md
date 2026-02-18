@@ -15,9 +15,10 @@
 ## ⚙️ Режимы работы
 
 ### 👨‍💻 Dev-режим (локальная разработка)
-- Backend запускается в Docker (`localhost:3000`)
+- Backend запускается локально (`localhost:3000`)
 - Frontend запускается через `vite` (`localhost:5173`)
 - Прокси на `/api` направляет запросы с фронта к бэкенду
+- Альтернатива: полный dev-стек через `docker compose up --build` (порт `80`)
 
 ### 🚀 Prod-режим (примеры для самостоятельного запуска)
 - Все сервисы (frontend, backend, nginx, CS2) могут быть запущены через Docker Compose
@@ -31,26 +32,26 @@
 В корне проекта находится папка `prod`, содержащая **примерную продовую конфигурацию**:
 
 - `prod/docker-compose.yml` — пример сборки backend, frontend и nginx
-- `prod/nginx/default.conf` — nginx-конфиг с проксированием `/api` и SPA fallback
+- `nginx/nginx.http.conf` и `nginx/nginx.https.conf` — nginx-конфиги
 
-> ⚠️ Также может использоваться как dev-обёртка для backend в Docker
+> ⚠️ Это пример прод-конфигурации. Основной dev compose находится в корне (`docker-compose.yml`).
 
 ---
 
 ## 📁 Корневая конфигурация
 
 - `docker-compose.yml` — основной Docker Compose для dev
-- `nginx/default.conf` — может быть использован как dev-прокси при разработке или для прода
+- `nginx/nginx.http.conf` и `nginx/nginx.https.conf` — шаблоны nginx-конфигов
 
 ---
 
 ## 👨‍💻 Dev: Быстрый старт
 
-### 1. Запуск backend
+### 1. Запуск backend (локально)
 ```bash
-cd prod
+cd backend
 
-docker compose -f ../docker-compose.yml -f docker-compose.dev.yml up backend --build
+cargo run
 ```
 > Backend будет доступен на: `http://localhost:3000`
 
@@ -59,16 +60,22 @@ docker compose -f ../docker-compose.yml -f docker-compose.dev.yml up backend --b
 ```bash
 cd frontend
 
-yarn install
+yarn install --immutable
 yarn dev
 ```
 > Frontend доступен на: `http://localhost:5173`
+
+### 3. Альтернатива: полный dev-стек через Docker Compose
+```bash
+docker compose up --build
+```
+> Приложение будет доступно на: `http://localhost`
 
 ---
 
 ## 🔁 Прокси в Vite (dev)
 
-Файл `vite.config.ts` содержит:
+Файл `vite.config.js` содержит:
 ```ts
 server: {
   host: 'localhost',
@@ -107,6 +114,12 @@ api.post('/api/login', ...) // ❌ будет /api/api/login
 3. Прокси направит его на `localhost:3000/api/login`
 4. Backend вернёт JWT
 
+Дополнительные проверки перед PR:
+```bash
+cd frontend && yarn lint && yarn typecheck && yarn build
+cd backend && cargo fmt -- --check && cargo clippy --all-targets --all-features -- -D warnings && cargo build
+```
+
 ---
 
 ## 🛠️ Прод-запуск (пример)
@@ -127,9 +140,9 @@ docker compose up -d --pull always
 
 ## 🧼 Troubleshooting
 
-- Если получаешь `404` — проверь, не включён ли `rewrite` в `vite.config.ts`
+- Если получаешь `404` — проверь, не включён ли `rewrite` в `vite.config.js`
 - Backend логирует `println!(...)` в `login()` — можно отследить запросы
-- Убедись, что `yarn dev` перезапускается после изменения `vite.config.ts`
+- Убедись, что `yarn dev` перезапускается после изменения `vite.config.js`
 
 ---
 
