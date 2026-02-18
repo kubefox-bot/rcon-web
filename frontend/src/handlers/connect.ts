@@ -5,5 +5,5 @@ import { sendRconRequest } from "./rcon"
 export async function connectToServer(
 	payload: ConnectPayload,
 ): Promise<Result<"connected", string>> {
-	return sendRconRequest<"connected", ConnectPayload>("connect", payload)
+	return sendRconRequest<"connected">("connect", payload)
 }

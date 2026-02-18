@@ -24,10 +24,10 @@ pub async fn auth_middleware(
             if let Some(claims) = state.jwt.decode(t) {
                 let last = state.last_issued.lock().await;
                 let iat = claims.iat as i64;
-                if let Some(revoked_after) = *last
-                    && iat < revoked_after
-                {
-                    return Err(StatusCode::UNAUTHORIZED);
+                if let Some(revoked_after) = *last {
+                    if iat < revoked_after {
+                        return Err(StatusCode::UNAUTHORIZED);
+                    }
                 }
                 Ok(next.run(req).await)
             } else {

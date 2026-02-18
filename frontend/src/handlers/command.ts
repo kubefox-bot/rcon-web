@@ -5,5 +5,5 @@ import { sendRconRequest } from "./rcon"
 export async function sendCommand(
 	payload: CommandPayload,
 ): Promise<Result<RconResponse, string>> {
-	return sendRconRequest<RconResponse, CommandPayload>("command", payload)
+	return sendRconRequest<RconResponse>("command", payload)
 }
