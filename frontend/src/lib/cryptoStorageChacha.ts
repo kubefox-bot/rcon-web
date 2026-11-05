@@ -36,8 +36,7 @@ export class CryptoStorageChaCha implements ICryptoStorage {
 
 			if (!decrypted) return null
 			return new TextDecoder().decode(decrypted)
-		} catch (e) {
-			console.warn("❌ ChaCha decrypt error:", e)
+		} catch {
 			return null
 		}
 	}

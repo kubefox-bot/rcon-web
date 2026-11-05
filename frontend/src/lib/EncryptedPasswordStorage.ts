@@ -22,8 +22,7 @@ export class EncryptedPasswordStorage {
 		try {
 			const encrypted = await this.crypto.encrypt(password)
 			return await `enc:${encrypted}`
-		} catch (e: unknown) {
-			console.warn("⚠️ Ошибка при шифровании:", e)
+		} catch {
 			return null
 		}
 	}
@@ -36,8 +35,7 @@ export class EncryptedPasswordStorage {
 		try {
 			const payload = encrypted.slice(4)
 			return await this.crypto.decrypt(payload)
-		} catch (e: unknown) {
-			console.warn("⚠️ Ошибка при расшифровке:", e)
+		} catch {
 			return null
 		}
 	}

@@ -1,6 +1,6 @@
 import { jwt } from "@/lib"
 import { api } from "@/lib/api"
-import type { AxiosError } from "axios"
+import { isAxiosError } from "axios"
 import { type Result, err, ok } from "neverthrow"
 import { computed, ref } from "vue"
 import { useAppStep } from "./useAppStep"
@@ -22,10 +22,15 @@ export function useAuth() {
 			isAuthenticated.value = true
 			return ok("logged-in")
 		} catch (error) {
-			const axiosError = error as AxiosError<{ message?: string }>
-
+			const data = isAxiosError<{ error?: unknown; message?: unknown }>(error)
+				? error.response?.data
+				: undefined
 			isAuthenticated.value = false
-			const message = axiosError.response?.data?.message || "Login failed"
+			const message =
+				[data?.error, data?.message].find(
+					(value): value is string =>
+						typeof value === "string" && value.length > 0,
+				) ?? "Login failed"
 			flash.show(`❌ ${message}`)
 
 			return err(message)

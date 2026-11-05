@@ -43,6 +43,6 @@ async fn main() {
 
     let app = build_router(state);
     let listener = TcpListener::bind(addr).await.expect("Failed to bind");
-    println!("🚀 API running on http://{}", addr);
+    tracing::info!(%addr, "API listening");
     axum::serve(listener, app).await.unwrap();
 }
