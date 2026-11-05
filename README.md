@@ -128,9 +128,37 @@ docker compose up -d --pull always
 ## 🧼 Troubleshooting
 
 - Если получаешь `404` — проверь, не включён ли `rewrite` в `vite.config.ts`
-- Backend логирует `println!(...)` в `login()` — можно отследить запросы
+- Backend использует `tracing` для диагностики; пароли и JWT в логи не выводятся
 - Убедись, что `yarn dev` перезапускается после изменения `vite.config.ts`
 
 ---
 
-Готово! Проект готов к использованию и доработке как в dev, так и в prod окружении 💪
+## Проверка исправлений
+
+Регрессионные тесты используют Bun без дополнительных npm-зависимостей. Для
+фронтенд-тестов установите зависимости через существующий Yarn lockfile с локальным
+переопределением linker (Bun запускается с `node_modules`):
+
+```bash
+cd frontend
+YARN_NODE_LINKER=node-modules yarn install --immutable
+bun test tests
+YARN_NODE_LINKER=node-modules yarn lint
+YARN_NODE_LINKER=node-modules yarn exec vue-tsc --noEmit
+YARN_NODE_LINKER=node-modules yarn build
+```
+
+Интеграционный тест авторизации запускает отдельный локальный backend с тестовыми
+секретами, проверяет успешный/неуспешный вход и отсутствие паролей и JWT в логах:
+
+```bash
+cd backend
+cargo build --locked
+bun test tests
+cargo test --locked
+cargo fmt -- --check
+cargo clippy --all-targets --all-features -- -D warnings
+```
+
+Изменения сгенерированных `.pnp.*`, `.yarn/install-state.gz` и платформенных архивов
+после локальной установки зависимостей не входят в исправления.

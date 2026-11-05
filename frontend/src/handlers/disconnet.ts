@@ -1,6 +1,7 @@
 import type { Result } from "neverthrow"
 import { sendRconRequest } from "./rcon"
 
-export async function disconnect(): Promise<Result<"disconnected", string>> {
-	return sendRconRequest<"disconnected">("disconnect")
+export const disconnect = async (): Promise<Result<"disconnected", string>> => {
+	const result = await sendRconRequest<unknown>({ action: "disconnect" })
+	return result.map(() => "disconnected")
 }
